@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy
 from .models import Group, CustomUser
 
@@ -20,6 +20,13 @@ class GroupCreateView(CreateView):
     model = Group
     fields = ["name", "about"] #поля по моделям 
     template_name = "Group_portal/group_create.html"
+    success_url = reverse_lazy("group-list")
+
+class GroupUpdateView(UpdateView):
+    model = Group
+    fields = ["name", "about"]
+    template_name = "Group_portal/group_update.html"
+    context_object_name = "group"
     success_url = reverse_lazy("group-list")
 
 class UserListView(ListView):
