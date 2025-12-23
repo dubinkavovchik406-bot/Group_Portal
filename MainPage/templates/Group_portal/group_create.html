@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create group</title>
+</head>
+<body>
+
+<h1>Створити групу</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Створити</button>
+</form>
+
+</body>
+</html>

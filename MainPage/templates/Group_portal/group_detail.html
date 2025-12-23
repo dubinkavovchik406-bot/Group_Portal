@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ group.name }}</title>
+</head>
+<body>
+
+<h1>{{ group.name }}</h1>
+<p>{{ group.about }}</p>
+
+<h2>Учасники</h2>
+
+<ul>
+    {% for user in group.members.all %}
+        <li>
+            <a href="{% url 'user-detail' user.pk %}">
+                {{ user.username }}
+            </a>
+        </li>
+    {% empty %}
+        <li>У групі поки немає учасників</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'group-list' %}">← Назад</a>
+
+</body>
+</html>
