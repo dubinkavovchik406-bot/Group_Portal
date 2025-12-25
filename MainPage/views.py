@@ -61,3 +61,9 @@ class UserUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse("user-detail", kwargs={"pk": self.object.pk})
+
+class UserDeleteView(DeleteView):
+    model = CustomUser
+    success_url = reverse_lazy("user-list")
+    template_name = "Group_portal/user_delete.html"
+
