@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     GroupListView, GroupDetailView, GroupCreateView, GroupUpdateView,
-    UserListView, UserDetailView, GroupDeleteView
+    UserListView, UserDetailView, GroupDeleteView, UserCreateView
 )
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
 
     path("users/", UserListView.as_view(), name="user-list"),
     path("users/<int:pk>/", UserDetailView.as_view(), name="user-detail"),
+    path("users/create/", UserCreateView.as_view(), name="user-create"),
 ]

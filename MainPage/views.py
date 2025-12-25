@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+
+from .forms import CustomUserForm
 from .models import Group, CustomUser
 
 class GroupListView(ListView):
@@ -46,3 +48,8 @@ class UserDetailView(DetailView):
     template_name = "Group_portal/user_detail.html"
     context_object_name = "user"
 
+class UserCreateView(CreateView):
+    model = CustomUser
+    form_class = CustomUserForm #Это подтягивает фиелдс Модели, но как отдельно оформленый класс
+    success_url = reverse_lazy("user-list")
+    template_name = "Group_portal/user_create.html"
