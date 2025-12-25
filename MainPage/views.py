@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from .forms import CustomUserForm
 from .models import Group, CustomUser
@@ -53,3 +53,11 @@ class UserCreateView(CreateView):
     form_class = CustomUserForm #Это подтягивает фиелдс Модели, но как отдельно оформленый класс
     success_url = reverse_lazy("user-list")
     template_name = "Group_portal/user_create.html"
+
+class UserUpdateView(UpdateView):
+    model = CustomUser
+    form_class = CustomUserForm
+    template_name = "Group_portal/user_update.html"
+
+    def get_success_url(self):
+        return reverse("user-detail", kwargs={"pk": self.object.pk})
