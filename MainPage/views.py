@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
-from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy, reverse
+
+from .forms import CustomUserForm
 from .models import Group, CustomUser
 
 class GroupListView(ListView):
@@ -18,9 +20,21 @@ class GroupDetailView(DetailView):
 class GroupCreateView(CreateView):
     # створення групи
     model = Group
-    fields = ["name", "about"] #поля по моделям 
+    fields = ["name", "about"]
     template_name = "Group_portal/group_create.html"
     success_url = reverse_lazy("group-list")
+
+class GroupUpdateView(UpdateView):
+    model = Group
+    fields = ["name", "about"]
+    template_name = "Group_portal/group_update.html"
+    context_object_name = "group"
+    success_url = reverse_lazy("group-list")
+
+class GroupDeleteView(DeleteView):
+    model = Group
+    success_url = reverse_lazy("group-list")
+    template_name = "Group_portal/group_delete.html"
 
 class UserListView(ListView):
     # список користувачів
@@ -33,4 +47,23 @@ class UserDetailView(DetailView):
     model = CustomUser
     template_name = "Group_portal/user_detail.html"
     context_object_name = "user"
+
+class UserCreateView(CreateView):
+    model = CustomUser
+    form_class = CustomUserForm #Это подтягивает фиелдс Модели, но как отдельно оформленый класс
+    success_url = reverse_lazy("user-list")
+    template_name = "Group_portal/user_create.html"
+
+class UserUpdateView(UpdateView):
+    model = CustomUser
+    form_class = CustomUserForm
+    template_name = "Group_portal/user_update.html"
+
+    def get_success_url(self):
+        return reverse("user-detail", kwargs={"pk": self.object.pk})
+
+class UserDeleteView(DeleteView):
+    model = CustomUser
+    success_url = reverse_lazy("user-list")
+    template_name = "Group_portal/user_delete.html"
 
