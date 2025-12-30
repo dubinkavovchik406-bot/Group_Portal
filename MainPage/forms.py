@@ -1,6 +1,19 @@
 from django import forms
 from .models import CustomUser, Group
+from django.contrib.auth.forms import UserCreationForm
 
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = CustomUser
+        fields = (
+            "username",
+            "age",
+            "gender",
+            "group",
+            "password1",
+            "password2",
+        )
+        
 class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
