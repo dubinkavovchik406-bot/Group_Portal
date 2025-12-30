@@ -1,10 +1,16 @@
 from django.urls import path
 from .views import (
     GroupListView, GroupDetailView, GroupCreateView, GroupUpdateView,
-    UserListView, UserDetailView, GroupDeleteView, UserCreateView, UserUpdateView, UserDeleteView
+    UserListView, UserDetailView, GroupDeleteView, UserCreateView, UserUpdateView, UserDeleteView, 
+    CustomLoginView, CustomLogoutView, RegisterView
 )
 
 urlpatterns = [
+    path("", CustomLoginView.as_view(), name="login"),
+    path("login/", CustomLoginView.as_view(), name="login"),
+    path("register/", RegisterView.as_view(), name="register"),
+    path("logout/", CustomLogoutView.as_view(), name="logout"),
+
     path("groups/", GroupListView.as_view(), name="group-list"),
     path("groups/create/", GroupCreateView.as_view(), name="group-create"),
     path("groups/<int:pk>/", GroupDetailView.as_view(), name="group-detail"),
