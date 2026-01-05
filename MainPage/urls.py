@@ -1,8 +1,8 @@
 from django.urls import path
 from .views import (
-    GroupListView, GroupDetailView, GroupCreateView, GroupUpdateView,
-    UserListView, UserDetailView, GroupDeleteView, UserUpdateView, UserDeleteView,
-    CustomLoginView, CustomLogoutView, RegisterView, JoinGroupView
+    GroupListView, GroupDetailView, GroupCreateView, GroupUpdateView, GroupDeleteView,
+    UserListView, UserDetailView, UserUpdateView, UserDeleteView, JoinGroupView,
+    CustomLoginView, CustomLogoutView, RegisterView
 )
 
 urlpatterns = [

@@ -42,13 +42,13 @@ class GroupDetailView(LoginRequiredMixin, DetailView):
 class GroupCreateView(LoginRequiredMixin, IsStaffMixin, CreateView):
     # створення групи
     model = Group
-    fields = ["name", "about"] #поля по моделям 
+    form_class = forms.GroupForm
     template_name = "Group_portal/group_create.html"
     success_url = reverse_lazy("group-list")
 
 class GroupUpdateView(LoginRequiredMixin, IsStaffMixin, UpdateView):
     model = Group
-    fields = ["name", "about"]
+    form_class = forms.GroupForm
     template_name = "Group_portal/group_update.html"
     context_object_name = "group"
     success_url = reverse_lazy("group-list")
