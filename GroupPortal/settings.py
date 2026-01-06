@@ -118,3 +118,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'MainPage.CustomUser'
+
+LOGIN_URL = "login" # Название url для входа
+LOGIN_REDIRECT_URL = "groups" # Куда кидать после входа

@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Groups</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
+{% block content %}
 <h1>Список груп</h1>
 
 <ul>
@@ -21,6 +17,5 @@
 </ul>
 
 <a href="{% url 'group-create' %}">Створити групу</a>
+{% endblock %}
 
-</body>
-</html>
