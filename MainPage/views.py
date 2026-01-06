@@ -4,6 +4,7 @@ from django.urls import reverse_lazy, reverse
 from MainPage import forms
 from .mixins import UserIsOwnerMixin, IsStaffMixin
 from .models import Group, CustomUser
+from .forms import CustomUserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
@@ -14,12 +15,12 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
     next_page = reverse_lazy('group-list')
 
-class CustomLogoutView(LogoutView):
+class CustomLogoutView(LoginRequiredMixin, LogoutView):
     next_page = reverse_lazy('login')
 
 class RegisterView(FormView):
     template_name = 'Group_portal/register.html'
-    form_class = forms.CustomUserCreationForm
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy('group-list')
 
     def form_valid(self, form):
@@ -73,6 +74,9 @@ class UserUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     form_class = forms.CustomUserUpdateForm
     template_name = "Group_portal/user_update.html"
 
+    def get_object(self, queryset=None):
+        return self.request.user
+
     def get_success_url(self):
         return reverse("user-detail", kwargs={"pk": self.object.pk})
 
@@ -92,4 +96,5 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "Group_portal/user_detail.html"
     context_object_name = "user"
+
 
