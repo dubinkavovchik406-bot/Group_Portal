@@ -1,16 +1,14 @@
-/* 1. ФИКС ПРОКРУТКИ */
-html {
-    scrollbar-gutter: stable;
-}
-
+/* --- 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ И ФИКСЫ --- */
 :root {
     --portal-dark: #2d3436;
     --portal-primary: #0d6efd;
     --portal-bg-gray: #f1f3f5;
 }
 
-/* 2. ОБЩИЕ СТИЛИ */
-body {
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    scrollbar-gutter: stable;
     font-family: 'Inter', sans-serif;
     background-color: var(--portal-bg-gray);
     color: var(--portal-dark);
@@ -20,11 +18,28 @@ body {
     margin: 0;
 }
 
-/* 3. ШАПКА (HEADER) */
+/* Силовое прерывание длинных строк для всего контента */
+h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    hyphens: auto;
+}
+
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+/* Запрет разрыва для коротких статусов (мужчина/женщина) */
+.no-split {
+    white-space: nowrap !important;
+}
+
+/* --- 2. ШАПКА И КНОПКИ --- */
 .navbar {
     background-color: #ffffff !important;
     padding: 0.9rem 0;
-    border: none;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
 }
 
@@ -33,7 +48,6 @@ body {
     font-size: 1.4rem;
     letter-spacing: -0.6px;
     color: var(--portal-dark) !important;
-    text-decoration: none;
 }
 
 .brand-dot { color: var(--portal-primary); }
@@ -44,9 +58,34 @@ body {
     font-weight: 600;
     font-size: 0.85rem;
     transition: all 0.3s ease;
-    line-height: 1.4;
 }
 
+/* Спеціально для кнопок, які можуть містити довгі назви груп */
+.btn-group-link {
+    max-width: 100%;
+    white-space: normal !important;
+    text-align: left;
+}
+
+/* --- 3. АДАПТИВНОСТЬ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ (320px - 350px) --- */
+@media (max-width: 350px) {
+    .badge {
+        font-size: 0.75rem !important;
+        padding: 4px 10px !important;
+        white-space: nowrap !important;
+    }
+
+    .card.p-4, .card.p-md-5 {
+        padding: 1.2rem !important;
+    }
+
+    h1 { font-size: 1.6rem !important; }
+
+    .container {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+}
 /* 4. ФУТЕР (FOOTER)  */
 .footer {
     background-color: var(--portal-dark);
@@ -335,3 +374,7 @@ body {
 select.form-control {
     cursor: pointer;
 }
+
+
+
+

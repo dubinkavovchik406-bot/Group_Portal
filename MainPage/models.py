@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
 
 class Group(models.Model):
-    name = models.CharField(max_length=256, unique=True,
+    name = models.CharField(max_length=25, unique=True,
                             validators=[MinLengthValidator(3, message="Назва групи має містити принаймні 3 символи")])
     about = models.TextField(blank=True, null=True)
 

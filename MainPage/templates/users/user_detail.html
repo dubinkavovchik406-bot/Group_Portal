@@ -22,13 +22,14 @@
             </div>
 
             {# Логин и Реальное Имя #}
-            <h1 class="fw-bold mb-0">{{ user_object.username }}</h1>
+            <h1 class="fw-bold mb-0 text-break">{{ user_object.username }}</h1>
 
             {% if user_object.first_name or user_object.last_name %}
-                <p class="text-secondary mb-1">{{ user_object.first_name }} {{ user_object.last_name }}</p>
+                <p class="text-secondary mb-1 text-break">{{ user_object.first_name }} {{ user_object.last_name }}</p>
             {% endif %}
 
-            <p class="badge {% if user_object.is_admin %}bg-danger{% elif user_object.is_moderator %}bg-warning text-dark{% else %}bg-secondary{% endif %} rounded-pill mb-4">
+            {# Твоя любимая оригинальная роль #}
+            <p class="badge {% if user_object.is_admin %}bg-danger{% elif user_object.is_moderator %}bg-warning text-dark{% else %}bg-secondary{% endif %} rounded-pill mb-4 mt-2">
                 {{ user_object.get_role_display }}
             </p>
 
@@ -44,16 +45,16 @@
                 </div>
                 {% endif %}
 
-                <div class="col-6">
-                    <div class="p-3 bg-light rounded-4">
+                <div class="col-12 col-sm-6">
+                    <div class="p-3 bg-light rounded-4 h-100">
                         <small class="text-muted d-block">Вік</small>
                         <span class="fw-bold">{{ user_object.age|default:"—" }}</span>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="p-3 bg-light rounded-4">
+                <div class="col-12 col-sm-6">
+                    <div class="p-3 bg-light rounded-4 h-100">
                         <small class="text-muted d-block">Стать</small>
-                        <span class="fw-bold">{{ user_object.get_gender_display|default:"—" }}</span>
+                        <span class="fw-bold no-split">{{ user_object.get_gender_display|default:"—" }}</span>
                     </div>
                 </div>
             </div>
@@ -62,7 +63,9 @@
             <div class="text-start mb-4">
                 <h6 class="fw-bold mb-2 ps-1"><i class="bi bi-people me-2"></i>Поточна спільнота:</h6>
                 {% if user_object.group %}
-                    <a href="{% url 'group-detail' user_object.group.pk %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                    <a href="{% url 'group-detail' user_object.group.pk %}" 
+                       class="btn btn-outline-primary btn-sm rounded-pill px-3 d-inline-block text-truncate shadow-sm"
+                       style="max-width: 100%;">
                         {{ user_object.group.name }}
                     </a>
                 {% else %}
@@ -73,7 +76,7 @@
             {# Кнопки управления (только для владельца) #}
             {% if user == user_object %}
                 <hr class="my-4" style="opacity: 0.1;">
-                <div class="d-flex gap-2 justify-content-center">
+                <div class="d-flex gap-2 justify-content-center flex-wrap">
                     <a href="{% url 'user-update' user_object.pk %}" class="btn btn-primary btn-round px-4 shadow-sm">
                         Редагувати
                     </a>
