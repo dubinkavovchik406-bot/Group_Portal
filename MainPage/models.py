@@ -1,9 +1,11 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinLengthValidator
 
 class Group(models.Model):
-    name = models.CharField(max_length=256)
+    name = models.CharField(max_length=256, unique=True,
+                            validators=[MinLengthValidator(3, message="Назва групи має містити принаймні 3 символи")])
     about = models.TextField(blank=True, null=True)
 
     @property # это чтобы можно было обращаться к функции без скобок
@@ -58,3 +60,16 @@ class CustomUser(AbstractUser):
     # это как по дефолту будет отображаться объект класса
     def __str__(self):
         return self.username
+
+    # Теперь, чтобы проверить юзер это админ или нет, можно просто написать user.is_admin
+    @property
+    def is_admin(self):
+        return self.role == self.ROLE_ADMIN or self.is_superuser
+
+    # Теперь, чтобы проверить юзер это модер или нет, можно просто написать user.is_moderator
+    @property
+    def is_moderator(self):
+        return self.role == self.ROLE_MODERATOR
+
+    def is_my_group_moderator(self, group_obj):
+        return self.is_moderator and self.group == group_obj

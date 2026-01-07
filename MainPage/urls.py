@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     GroupListView, GroupDetailView, GroupCreateView, GroupUpdateView, GroupDeleteView,
-    UserListView, UserDetailView, UserUpdateView, UserDeleteView, JoinGroupView,
+    UserListView, UserDetailView, UserUpdateView, UserDeleteView, JoinGroupView, LeaveGroupView,
     CustomLoginView, CustomLogoutView, RegisterView
 )
 
@@ -15,10 +15,11 @@ urlpatterns = [
     path("groups/<int:pk>/", GroupDetailView.as_view(), name="group-detail"),
     path("groups/update/<int:pk>/", GroupUpdateView.as_view(), name="group-update"),
     path("groups/delete/<int:pk>/", GroupDeleteView.as_view(), name="group-delete"),
+    path("groups/join-group/<int:pk>", JoinGroupView.as_view(), name="user-join-group"),
+    path('groups/leave/<int:pk>', LeaveGroupView.as_view(), name='user-leave-group'),
 
     path("users/", UserListView.as_view(), name="user-list"),
     path("users/<int:pk>/", UserDetailView.as_view(), name="user-detail"),
     path("users/update/<int:pk>/", UserUpdateView.as_view(), name="user-update"),
     path("users/delete/<int:pk>/", UserDeleteView.as_view(), name="user-delete"),
-    path("users/join-group/", JoinGroupView.as_view(), name="user-join-group")
 ]
