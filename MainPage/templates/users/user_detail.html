@@ -1,27 +1,89 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ user.username }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-<h1>{{ user.username }}</h1>
+{% block title %}Профіль: {{ user_object.username }}{% endblock %}
 
-<p>Вік: {{ user.age }}</p>
-<p>Стать: {{ user.gender }}</p>
-
-{% if user.group %}
-    <p>
-        Група:
-        <a href="{% url 'group-detail' user.group.pk %}">
-            {{ user.group.name }}
-        </a>
-    </p>
-{% else %}
-    <p>Без групи</p>
+{% block content %}
+{# Назад к списку видит только админ портала #}
+{% if user.is_admin %}
+<div class="mb-4">
+    <a href="{% url 'user-list' %}" class="btn btn-link text-decoration-none p-0 text-muted small">
+        <i class="bi bi-arrow-left"></i> Назад до списку користувачів
+    </a>
+</div>
 {% endif %}
 
-<a href="{% url 'user-list' %}">← Назад</a>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm p-4 p-md-5 text-center">
 
-</body>
-</html>
+            {# Аватарка #}
+            <div class="avatar-circle mx-auto mb-4" style="width: 100px; height: 100px; font-size: 2.5rem; background: linear-gradient(45deg, #0d6efd, #0dcaf0); color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                {{ user_object.username|first|upper }}
+            </div>
+
+            {# Логин и Реальное Имя #}
+            <h1 class="fw-bold mb-0">{{ user_object.username }}</h1>
+
+            {% if user_object.first_name or user_object.last_name %}
+                <p class="text-secondary mb-1">{{ user_object.first_name }} {{ user_object.last_name }}</p>
+            {% endif %}
+
+            <p class="badge {% if user_object.is_admin %}bg-danger{% elif user_object.is_moderator %}bg-warning text-dark{% else %}bg-secondary{% endif %} rounded-pill mb-4">
+                {{ user_object.get_role_display }}
+            </p>
+
+            {# Основная инфо-сетка #}
+            <div class="row g-3 text-start mb-4">
+                {# Email видит ТОЛЬКО владелец профиля #}
+                {% if user == user_object %}
+                <div class="col-12">
+                    <div class="p-3 bg-light rounded-4">
+                        <small class="text-muted d-block">Електронна пошта (приватно)</small>
+                        <span class="fw-bold text-break">{{ user_object.email|default:"—" }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="col-6">
+                    <div class="p-3 bg-light rounded-4">
+                        <small class="text-muted d-block">Вік</small>
+                        <span class="fw-bold">{{ user_object.age|default:"—" }}</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 bg-light rounded-4">
+                        <small class="text-muted d-block">Стать</small>
+                        <span class="fw-bold">{{ user_object.get_gender_display|default:"—" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            {# ГРУППА #}
+            <div class="text-start mb-4">
+                <h6 class="fw-bold mb-2 ps-1"><i class="bi bi-people me-2"></i>Поточна спільнота:</h6>
+                {% if user_object.group %}
+                    <a href="{% url 'group-detail' user_object.group.pk %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                        {{ user_object.group.name }}
+                    </a>
+                {% else %}
+                    <span class="text-muted small ps-1">Користувач ще не приєднався до жодної групи.</span>
+                {% endif %}
+            </div>
+
+            {# Кнопки управления (только для владельца) #}
+            {% if user == user_object %}
+                <hr class="my-4" style="opacity: 0.1;">
+                <div class="d-flex gap-2 justify-content-center">
+                    <a href="{% url 'user-update' user_object.pk %}" class="btn btn-primary btn-round px-4 shadow-sm">
+                        Редагувати
+                    </a>
+                    <a href="{% url 'user-delete' user_object.pk %}" class="btn btn-outline-danger btn-round px-4">
+                        Видалити
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
