@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Видалення спільноти{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="col-md-6 col-lg-5 text-center">
+        <div class="card border-0 shadow-sm p-4 p-md-5">
+            {# Иконка предупреждения #}
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle" style="width: 80px; height: 80px;">
+                    <i class="bi bi-exclamation-triangle-fill fs-1"></i>
+                </div>
+            </div>
+
+            <h2 class="fw-bold text-dark mb-3">Видалення групи</h2>
+            
+            <p class="text-muted">
+                Ви впевнені, що хочете видалити групу <br>
+                <span class="fw-bold text-dark">"{{ group_object.name }}"</span>?
+            </p>
+
+            <div class="alert alert-warning border-0 small py-2 mb-4">
+                <i class="bi bi-info-circle me-1"></i> Цю дію неможливо буде скасувати.
+            </div>
+
+            <form method="post" class="d-flex flex-column gap-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-round py-2 fw-bold shadow-sm">
+                    Так, видалити назавжди
+                </button>
+                <a href="{% url 'group-detail' group_object.pk %}" class="btn btn-link text-decoration-none text-muted small mt-2">
+                    Ні, я передумав (назад)
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
