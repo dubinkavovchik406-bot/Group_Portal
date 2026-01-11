@@ -56,6 +56,7 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = "CmUser"
         verbose_name_plural = "CmUsers"
+        ordering = ['id']
 
     # это как по дефолту будет отображаться объект класса
     def __str__(self):
