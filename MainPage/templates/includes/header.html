@@ -5,16 +5,24 @@
         </a>
 
         <div class="d-flex align-items-center ms-auto order-lg-last">
-            <span class="text-muted small me-2 d-inline-block">
-                Привіт, <span class="fw-bold text-dark">{{ user.username }}</span>
-            </span>
+            {% if user.is_authenticated %}
+                {# Видим только если залогинены #}
+                <span class="text-muted small me-2 d-inline-block">
+                    Привіт, <span class="fw-bold text-dark">{{ user.username }}</span>
+                </span>
 
-            <form action="{% url 'logout' %}" method="post" class="m-0">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-outline-danger btn-round py-1 px-3" style="font-size: 0.8rem;">
-                    Вийти
-                </button>
-            </form>
+                <form action="{% url 'logout' %}" method="post" class="m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger btn-round py-1 px-3" style="font-size: 0.8rem;">
+                        Вийти
+                    </button>
+                </form>
+            {% else %}
+                {# Видим если гость #}
+                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-round py-1 px-3" style="font-size: 0.8rem;">
+                    Увійти
+                </a>
+            {% endif %}
         </div>
     </div>
 </nav>
