@@ -113,7 +113,7 @@ class UserListView(LoginRequiredMixin, AdminRequiredMixin, ListView):
     model = CustomUser
     template_name = "users/user_list.html"
     context_object_name = "users_objects"
-    paginate_by = 3
+    paginate_by = 4
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     # 1 користувач

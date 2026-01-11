@@ -1,46 +1,58 @@
-/* --- 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ И ФИКСЫ --- */
+/* --- 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ И УЛЬТИМАТИВНЫЕ ФИКСЫ --- */
 :root {
     --portal-dark: #2d3436;
     --portal-primary: #0d6efd;
     --portal-bg-gray: #f1f3f5;
 }
 
-html, body {
+html {
+    /* Резервируем место под скроллбар всегда. Это лечит "прыжки" шапки вправо */
+    overflow-y: scroll;
+    /* Убираем горизонтальный скролл на корню */
     overflow-x: hidden;
-    width: 100%;
-    scrollbar-gutter: stable;
+}
+
+/* Жестко фиксируем ширину всего документа */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    /* ИСПОЛЬЗУЕМ 100% вместо 100vw, чтобы не залезать под скроллбар! */
+    width: 100% !important;
+
     font-family: 'Inter', sans-serif;
     background-color: var(--portal-bg-gray);
     color: var(--portal-dark);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    margin: 0;
 }
 
-/* Силовое прерывание длинных строк для всего контента */
+/* ФИКС ДЛЯ КАРТОЧЕК:
+   1. Оставляем margin 0, чтобы ряд не вылезал за экран.
+   2. УБРАЛИ --bs-gutter-x: 0, чтобы вернуть отступы между карточками! */
+.row {
+    margin-right: -15px !important;
+    margin-left: -15px !important;
+}
+
+/* Силовое прерывание длинных строк */
 h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     overflow-wrap: break-word !important;
     word-wrap: break-word !important;
     word-break: break-word !important;
-    hyphens: auto;
 }
 
-.row {
-    margin-right: 0;
-    margin-left: 0;
-}
-
-/* Запрет разрыва для коротких статусов (мужчина/женщина) */
-.no-split {
-    white-space: nowrap !important;
-}
-
-/* --- 2. ШАПКА И КНОПКИ --- */
+/* --- 2. ШАПКА (ЖЕСТКАЯ ФИКСАЦИЯ) --- */
 .navbar {
     background-color: #ffffff !important;
     padding: 0.9rem 0;
     box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+
+    /* Эти строки заставят её прилипнуть к краям */
+    width: 100% !important;
+    min-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
 }
 
 .navbar-brand {
@@ -52,54 +64,89 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
 
 .brand-dot { color: var(--portal-primary); }
 
-.btn-round {
-    border-radius: 50px;
-    padding: 8px 25px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-}
-
-/* Спеціально для кнопок, які можуть містити довгі назви груп */
-.btn-group-link {
-    max-width: 100%;
-    white-space: normal !important;
-    text-align: left;
-}
-
-/* --- 3. АДАПТИВНОСТЬ ДЛЯ МАЛЕНЬКИХ ЭКРАНОВ (320px - 350px) --- */
-@media (max-width: 350px) {
-    .badge {
-        font-size: 0.75rem !important;
-        padding: 4px 10px !important;
-        white-space: nowrap !important;
-    }
-
-    .card.p-4, .card.p-md-5 {
-        padding: 1.2rem !important;
-    }
-
-    h1 { font-size: 1.6rem !important; }
-
-    .container {
-        padding-right: 10px !important;
-        padding-left: 10px !important;
-    }
-}
-/* 4. ФУТЕР (FOOTER)  */
+/* --- 3. ФУТЕР (ЖЕСТКАЯ ФИКСАЦИЯ) --- */
 .footer {
     background-color: var(--portal-dark);
     color: #bdc3c7;
     padding: 22px 0;
     margin-top: auto;
+
+    /* Тотальный контроль ширины */
+    width: 100% !important;
+    min-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
 }
 
+/* --- 4. КОНТЕНТ И КОНТЕЙНЕРЫ (БАЗОВЫЕ) --- */
 .main-content {
     padding: 3rem 0;
     flex-grow: 1;
+    width: 100%;
 }
 
-/* 5. КАРТОЧКИ И ЭФФЕКТЫ */
+.container {
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+/* --- 5. АДАПТАЦИЯ ПОД БОЛЬШИЕ МОНИТОРЫ (2K и выше) --- */
+
+/* Стандартный Full HD (1200px+) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px !important;
+    }
+}
+
+/* Большие ноутбуки и экраны (1400px+) - Bootstrap XXL */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px !important;
+    }
+}
+
+/* 2K МОНИТОРЫ (1920px - 2500px) */
+@media (min-width: 1921px) {
+    .container {
+        max-width: 1600px !important; /* Делаем контент шире */
+    }
+    
+    /* Немного увеличиваем базовый шрифт для читаемости */
+    html {
+        font-size: 17px; 
+    }
+    
+    /* Карточки становятся крупнее, увеличиваем паддинги */
+    .card.p-4 {
+        padding: 2rem !important;
+    }
+}
+
+/* 4K и ULTRA-WIDE (2560px+) */
+@media (min-width: 2560px) {
+    .container {
+        max-width: 2000px !important; /* Максимальная ширина */
+    }
+    
+    html {
+        font-size: 18px; /* Еще крупнее шрифт */
+    }
+}
+
+
+/* --- 6. ОСТАЛЬНЫЕ ТВОИ СТИЛИ --- */
+.no-split { white-space: nowrap !important; }
+.btn-round { border-radius: 50px; padding: 8px 25px; font-weight: 600; font-size: 0.85rem; transition: all 0.3s ease; }
+.btn-group-link { max-width: 100%; white-space: normal !important; text-align: left; }
+
+@media (max-width: 350px) {
+    .badge { font-size: 0.75rem !important; padding: 4px 10px !important; }
+    .card.p-4 { padding: 1.2rem !important; }
+    h1 { font-size: 1.6rem !important; }
+}
+
+/* 7. КАРТОЧКИ И ЭФФЕКТЫ */
 .card {
     background-color: #ffffff;
     border-radius: 12px;
@@ -114,10 +161,7 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
 }
 
-/* --- 6. БЛОК ФОРМ */
-
-/* Делаем все инпуты внутри формы красивыми */
-/* ОБЪЕДИНЕНО: custom-form, form-group-wrapper и form-control теперь в одном стиле */
+/* --- 8. БЛОК ФОРМ --- */
 .custom-form input,
 .form-group-wrapper input,
 .form-group-wrapper textarea,
@@ -185,8 +229,6 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     margin-top: 8px;
-
-    /* Анимация */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -194,7 +236,6 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     pointer-events: none;
 }
 
-/* Раскрытие при фокусе */
 .form-group-wrapper:focus-within .help-text-container {
     opacity: 1;
     visibility: visible;
@@ -228,7 +269,6 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
 }
 
 /* --- USER LIST STYLES --- */
-/* Аватарка: небольшой градиент для красоты (ОБЪЕДИНЕНО) */
 .avatar-circle {
     width: 42px;
     height: 42px;
@@ -271,19 +311,16 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     padding: 6px 12px;
 }
 
-/* Настройка цветов для ролей (светлые фоны) */
-/* ОБЪЕДИНЕНО: Оставила один вызов bg-danger-subtle */
 .bg-danger-subtle { background-color: #fff5f5 !important; }
 .bg-warning-subtle { background-color: #fffaf0 !important; }
 
-/* Таблица */
 .table td {
     border-color: rgba(0,0,0,0.03);
 }
 
 /* ПАГИНАЦИЯ */
 .pagination {
-    gap: 10px; /* Расстояние между кнопками */
+    gap: 10px;
 }
 
 .pagination .page-item .page-link {
@@ -301,21 +338,18 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     font-weight: 600;
 }
 
-/* Эффект при наведении */
 .pagination .page-item .page-link:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     color: var(--portal-primary) !important;
 }
 
-/* Активная страница (синяя) */
 .pagination .page-item.active .page-link {
     background-color: var(--portal-primary) !important;
     color: white !important;
     box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
 }
 
-/* Неактивные стрелочки */
 .pagination .page-item.disabled .page-link {
     opacity: 0.5;
     background-color: #f8f9fa !important;
@@ -323,21 +357,15 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     transform: none;
 }
 
-/* Скругление для крайних кнопок  */
 .page-link {
     border-radius: 10px !important;
 }
 
-/* Стилизация полей формы (textarea и input) */
 .form-group-wrapper textarea {
     min-height: 120px;
-    resize: vertical; /* Чтобы можно было тянуть только вниз */
+    resize: vertical;
 }
 
-/* Цвет фона для предупреждений */
-/* (Уже объединено выше с bg-danger-subtle) */
-
-/* Кнопка удаления с эффектом */
 .btn-danger {
     background-color: #dc3545;
     border: none;
@@ -350,7 +378,7 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
 }
 
-/* МОДАЛКИ (ОБЪЕДИНЕНО ВСЕ ПОВТОРЫ) */
+/* МОДАЛКИ */
 .modal-content {
     background-color: #ffffff;
     border: none;
@@ -360,21 +388,15 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
 }
 
 .modal-backdrop.show {
-    opacity: 0.2; /* Делаем затемнение фона более легким и чистым */
+    opacity: 0.2;
 }
 
-/* Полное удаление контура и тени фокуса у модалок и кнопок внутри них */
 .modal:focus, .modal-dialog, .modal-content:focus,
 .modal-content .btn:focus, .modal-body .btn:focus, .modal-body .btn-link:focus {
     outline: none !important;
     box-shadow: none !important;
 }
 
-/* Убираем стандартные отступы у селекта (гендер) */
 select.form-control {
     cursor: pointer;
 }
-
-
-
-
