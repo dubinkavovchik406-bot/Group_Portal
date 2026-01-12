@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if user_object %}Редагування профілю: {{ user_object.username }}{% else %}Створення користувача{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    {# Ссылка назад: если редактируем — в профиль, если создаем (через админку) — в список #}
+    <a href="{% if user_object %}{% url 'user-detail' user_object.pk %}{% else %}{% url 'user-list' %}{% endif %}" class="btn btn-link text-decoration-none p-0 text-muted small">
+        <i class="bi bi-arrow-left"></i> Скасувати та повернутись
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 24px;">
+
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle mb-3" style="width: 60px; height: 60px;">
+                    <i class="bi {% if user_object %}bi-person-gear{% else %}bi-person-plus{% endif %} fs-3"></i>
+                </div>
+                <h2 class="fw-bold">
+                    {% if user_object %}Редагувати профіль{% else %}Новий користувач{% endif %}
+                </h2>
+                <p class="text-muted small">
+                    {% if user_object %}
+                        Ви оновлюєте інформацію для <strong>{{ user_object.username }}</strong>
+                    {% else %}
+                        Заповніть необхідні поля нижче
+                    {% endif %}
+                </p>
+            </div>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label fw-medium small ps-1">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ field.errors|first }}
+                            </div>
+                        {% endif %}
+                        {% if field.help_text %}
+                            <div class="form-text small">{{ field.help_text|safe }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-round py-2 fw-bold shadow-sm">
+                        {% if user_object %}Зберегти зміни{% else %}Створити користувача{% endif %}
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

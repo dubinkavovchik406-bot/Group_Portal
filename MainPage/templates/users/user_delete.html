@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Видалення: {{ user_object.username }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-lg p-4 p-md-5 text-center" style="border-radius: 24px;">
+
+            {# Иконка предупреждения #}
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle" style="width: 80px; height: 80px;">
+                    <i class="bi bi-person-x fs-1"></i>
+                </div>
+            </div>
+
+            <h3 class="fw-bold mb-3">Видалення профілю</h3>
+            <p class="text-secondary mb-4">
+                Ви впевнені, что хочете видалити свій аккаунт <strong class="text-dark">"{{ user_object.username }}"</strong>?
+                <br>
+                <span class="small text-muted">Всі ваші дані будуть стерті назавжди.</span>
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger btn-round py-2 fw-bold shadow-sm">
+                        Так, видалити назавжди
+                    </button>
+                    <a href="{% url 'user-detail' user_object.pk %}" class="btn btn-link text-muted text-decoration-none small">
+                        Ні, повернутись до профілю
+                    </a>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

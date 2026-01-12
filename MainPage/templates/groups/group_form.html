@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if group_object %}Редагування: {{ group_object.name }}{% else %}Створення групи{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+        <div class="mb-4">
+            {# Если редактируем — возвращаемся в группу, если создаем — в список #}
+            <a href="{% if group_object %}{% url 'group-detail' group_object.pk %}{% else %}{% url 'group-list' %}{% endif %}"
+               class="btn btn-link text-decoration-none text-muted p-0 small">
+                <i class="bi bi-arrow-left"></i> Назад
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm p-4 p-md-5">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">
+                    {% if group_object %}Оновити спільноту{% else %}Нова спільнота{% endif %}
+                </h2>
+                <p class="text-muted small">
+                    {% if group_object %}
+                        Ви редагуєте групу <strong>"{{ group_object.name }}"</strong>
+                    {% else %}
+                        Заповніть інформацію для створення вашої групи
+                    {% endif %}
+                </p>
+            </div>
+
+            <form method="post" class="custom-form">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger border-0 small">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label fw-semibold small text-dark">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.errors %}
+                        {% for error in field.errors %}
+                            <div class="text-danger small mt-1" style="font-size: 0.8rem;">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-round py-2 shadow-sm fw-bold">
+                        {% if group_object %}Зберегти зміни{% else %}Створити групу{% endif %}
+                    </button>
+                </div>
+            </form>
+
+            {# Только админ может видеть кнопку удаления в форме редактирования #}
+            {% if group_object and user.is_admin %}
+            <div class="text-center mt-4">
+                <hr class="my-4 opacity-5">
+                <a href="{% url 'group-delete' group_object.pk %}" class="text-danger small text-decoration-none">
+                    <i class="bi bi-trash"></i> Видалити групу
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,402 @@
+/* --- 1. ГЛОБАЛЬНЫЕ НАСТРОЙКИ И УЛЬТИМАТИВНЫЕ ФИКСЫ --- */
+:root {
+    --portal-dark: #2d3436;
+    --portal-primary: #0d6efd;
+    --portal-bg-gray: #f1f3f5;
+}
+
+html {
+    /* Резервируем место под скроллбар всегда. Это лечит "прыжки" шапки вправо */
+    overflow-y: scroll;
+    /* Убираем горизонтальный скролл на корню */
+    overflow-x: hidden;
+}
+
+/* Жестко фиксируем ширину всего документа */
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    /* ИСПОЛЬЗУЕМ 100% вместо 100vw, чтобы не залезать под скроллбар! */
+    width: 100% !important;
+
+    font-family: 'Inter', sans-serif;
+    background-color: var(--portal-bg-gray);
+    color: var(--portal-dark);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ФИКС ДЛЯ КАРТОЧЕК:
+   1. Оставляем margin 0, чтобы ряд не вылезал за экран.
+   2. УБРАЛИ --bs-gutter-x: 0, чтобы вернуть отступы между карточками! */
+.row {
+    margin-right: -15px !important;
+    margin-left: -15px !important;
+}
+
+/* Силовое прерывание длинных строк */
+h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+}
+
+/* --- 2. ШАПКА (ЖЕСТКАЯ ФИКСАЦИЯ) --- */
+.navbar {
+    background-color: #ffffff !important;
+    padding: 0.9rem 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+
+    /* Эти строки заставят её прилипнуть к краям */
+    width: 100% !important;
+    min-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.6px;
+    color: var(--portal-dark) !important;
+}
+
+.brand-dot { color: var(--portal-primary); }
+
+/* --- 3. ФУТЕР (ЖЕСТКАЯ ФИКСАЦИЯ) --- */
+.footer {
+    background-color: var(--portal-dark);
+    color: #bdc3c7;
+    padding: 22px 0;
+    margin-top: auto;
+
+    /* Тотальный контроль ширины */
+    width: 100% !important;
+    min-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+}
+
+/* --- 4. КОНТЕНТ И КОНТЕЙНЕРЫ (БАЗОВЫЕ) --- */
+.main-content {
+    padding: 3rem 0;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.container {
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+/* --- 5. АДАПТАЦИЯ ПОД БОЛЬШИЕ МОНИТОРЫ (2K и выше) --- */
+
+/* Стандартный Full HD (1200px+) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px !important;
+    }
+}
+
+/* Большие ноутбуки и экраны (1400px+) - Bootstrap XXL */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px !important;
+    }
+}
+
+/* 2K МОНИТОРЫ (1920px - 2500px) */
+@media (min-width: 1921px) {
+    .container {
+        max-width: 1600px !important; /* Делаем контент шире */
+    }
+    
+    /* Немного увеличиваем базовый шрифт для читаемости */
+    html {
+        font-size: 17px; 
+    }
+    
+    /* Карточки становятся крупнее, увеличиваем паддинги */
+    .card.p-4 {
+        padding: 2rem !important;
+    }
+}
+
+/* 4K и ULTRA-WIDE (2560px+) */
+@media (min-width: 2560px) {
+    .container {
+        max-width: 2000px !important; /* Максимальная ширина */
+    }
+    
+    html {
+        font-size: 18px; /* Еще крупнее шрифт */
+    }
+}
+
+
+/* --- 6. ОСТАЛЬНЫЕ ТВОИ СТИЛИ --- */
+.no-split { white-space: nowrap !important; }
+.btn-round { border-radius: 50px; padding: 8px 25px; font-weight: 600; font-size: 0.85rem; transition: all 0.3s ease; }
+.btn-group-link { max-width: 100%; white-space: normal !important; text-align: left; }
+
+@media (max-width: 350px) {
+    .badge { font-size: 0.75rem !important; padding: 4px 10px !important; }
+    .card.p-4 { padding: 1.2rem !important; }
+    h1 { font-size: 1.6rem !important; }
+}
+
+/* 7. КАРТОЧКИ И ЭФФЕКТЫ */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+}
+
+.transition-hover {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.transition-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+}
+
+/* --- 8. БЛОК ФОРМ --- */
+.custom-form input,
+.form-group-wrapper input,
+.form-group-wrapper textarea,
+.form-group-wrapper select,
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    background-color: #f8fafc;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+.custom-form input:focus,
+.form-group-wrapper input:focus,
+.form-group-wrapper textarea:focus,
+.form-control:focus {
+    border-color: var(--portal-primary);
+    outline: 0;
+    background-color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.form-control:hover {
+    border-color: #adb5bd;
+}
+
+.custom-form label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #495057;
+    display: block;
+    margin-top: 1rem;
+}
+
+/* ОШИБКИ */
+.custom-form .errorlist {
+    background-color: #fff5f5;
+    border: 1px solid #feb2b2;
+    color: #c53030;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    list-style: none;
+}
+
+/* ПОДСКАЗКИ */
+.form-group-wrapper {
+    position: relative;
+}
+
+.help-text-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    margin-top: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.form-group-wrapper:focus-within .help-text-container {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.help-text-content {
+    padding: 15px;
+    font-size: 0.85rem;
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+.help-text-content ul {
+    list-style: none;
+    padding-left: 15px;
+    margin: 0;
+}
+
+.help-text-content li {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.help-text-content li::before {
+    content: "•";
+    position: absolute;
+    left: -15px;
+    color: var(--portal-primary);
+    font-weight: bold;
+}
+
+/* --- USER LIST STYLES --- */
+.avatar-circle {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--portal-primary), #0056b3);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.15);
+}
+
+.table thead th {
+    border-top: none;
+    border-bottom: 1px solid #edf2f7;
+    letter-spacing: 0.5px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8faff;
+    transition: background-color 0.2s ease;
+}
+
+.badge-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+/* Роли пользователей */
+.badge {
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+.bg-danger-subtle { background-color: #fff5f5 !important; }
+.bg-warning-subtle { background-color: #fffaf0 !important; }
+
+.table td {
+    border-color: rgba(0,0,0,0.03);
+}
+
+/* ПАГИНАЦИЯ */
+.pagination {
+    gap: 10px;
+}
+
+.pagination .page-item .page-link {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px !important;
+    border: none !important;
+    background-color: #ffffff !important;
+    color: #333 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.pagination .page-item .page-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    color: var(--portal-primary) !important;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--portal-primary) !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+}
+
+.pagination .page-item.disabled .page-link {
+    opacity: 0.5;
+    background-color: #f8f9fa !important;
+    box-shadow: none;
+    transform: none;
+}
+
+.page-link {
+    border-radius: 10px !important;
+}
+
+.form-group-wrapper textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #bb2d3b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+/* МОДАЛКИ */
+.modal-content {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 20px !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+}
+
+.modal-backdrop.show {
+    opacity: 0.2;
+}
+
+.modal:focus, .modal-dialog, .modal-content:focus,
+.modal-content .btn:focus, .modal-body .btn:focus, .modal-body .btn-link:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+select.form-control {
+    cursor: pointer;
+}
