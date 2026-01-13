@@ -1,0 +1,18 @@
+<h2>{{ comment.author.username }}</h2>
+<p>{{ comment.content }}</p>
+
+{% if comment.media %}
+    <img src="{{ comment.media.url }}" style="max-width:500px;">
+{% endif %}
+
+<form method="post" action="{% url 'comment-like' comment.pk %}">
+    {% csrf_token %}
+    <button type="submit">Лайк</button>
+</form>
+
+<p>{{ comment.likes_count }}</p>
+
+{% if request.user == comment.author %}
+    <a href="{% url 'comment-update' comment.pk %}">Редагувати</a>
+    <a href="{% url 'comment-delete' comment.pk %}">Видалити</a>
+{% endif %}

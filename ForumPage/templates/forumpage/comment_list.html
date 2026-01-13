@@ -1,0 +1,25 @@
+<h1>Форум</h1>
+
+<a href="{% url 'comment-create' %}">Додати коментар</a>
+
+<hr>
+
+{% for comment in comments %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:15px;">
+        <b>{{ comment.author.username }}</b>
+        <small>{{ comment.created_at }}</small>
+
+        <p>{{ comment.content }}</p>
+
+        {% if comment.media %}
+            <img src="{{ comment.media.url }}"
+                 style="max-width:400px; height:auto; display:block; margin-top:10px;">
+        {% endif %}
+
+        <p>{{ comment.likes.count }}</p>
+
+        <a href="{% url 'comment-detail' comment.pk %}">Деталі</a>
+    </div>
+{% empty %}
+    <p>Коментарів поки немає</p>
+{% endfor %}
