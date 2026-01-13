@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'MainPage',
+    'ForumPage',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,6 @@ AUTH_USER_MODEL = 'MainPage.CustomUser'
 
 LOGIN_URL = "login" # Название url для входа
 LOGIN_REDIRECT_URL = "groups" # Куда кидать после входа
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
