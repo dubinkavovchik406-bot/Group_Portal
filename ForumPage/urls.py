@@ -7,7 +7,7 @@ from .views import (
     CommentDeleteView,
     CommentLikeToggle,
 )
-
+# хз базові юрли
 urlpatterns = [
     path("", CommentListView.as_view(), name="comment-list"),
     path("create/", CommentCreationView.as_view(), name="comment-create"),
