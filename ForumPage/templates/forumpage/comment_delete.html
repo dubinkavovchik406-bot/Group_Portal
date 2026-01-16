@@ -1,10 +1,50 @@
-<h1>Видалити коментар?</h1>
+{% extends 'base.html' %}
 
-<p>{{ object.content }}</p>
+{% block title %}Видалення повідомлення{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Так, видалити</button>
-</form>
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-6 col-lg-5">
 
-<a href="{% url 'comment-detail' object.pk %}">Скасувати</a>
+        {# Карточка в стиле твоих модалок (закругление 28px) #}
+        <div class="card border-0 shadow-lg p-4 p-md-5 text-center" style="border-radius: 28px;">
+
+            {# Большая иконка предупреждения как в group_leave #}
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle" style="width: 80px; height: 80px;">
+                    <i class="bi bi-exclamation-triangle-fill fs-1"></i>
+                </div>
+            </div>
+
+            <h3 class="fw-bold mb-3">Видалити коментар?</h3>
+
+            {# Превью удаляемого контента #}
+            <div class="bg-light p-3 rounded-4 mb-4 text-start">
+                <p class="text-muted small mb-0" style="font-style: italic;">
+                    "{{ object.content|truncatewords:15 }}"
+                </p>
+            </div>
+
+            <p class="text-secondary mb-4 small">
+                Ви впевнені? Цю дію <strong>неможливо скасувати</strong>, і ваше повідомлення зникне назавжди.
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2">
+                    {# Главная кнопка действия #}
+                    <button type="submit" class="btn btn-danger btn-round py-2 fw-bold shadow-sm">
+                        Так, видалити назавжди
+                    </button>
+
+                    {# Кнопка отмены #}
+                    <a href="{% url 'comment-detail' object.pk %}" class="btn btn-link text-muted text-decoration-none small mt-2">
+                        Я передумав, повернутися
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
