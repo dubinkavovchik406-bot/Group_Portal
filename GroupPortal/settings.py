@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'MainPage',
     'ForumPage',
+    'AdvertisementPage',
 ]
 
 MIDDLEWARE = [

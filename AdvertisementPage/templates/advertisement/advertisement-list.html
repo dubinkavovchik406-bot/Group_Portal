@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Усі Повідомлення{% endblock %}
+
+{% block content %}
+<a href="{% url 'advertisement-create'%}">Створити повідомлення</a>
+    {% for adv in advertisement_objects %}
+        <div class="ad-card">
+            <h2>{{ adv.name }}</h2>
+            <a href="{% url 'advertisement-detail' adv.pk %}">Переглянути деталі</a>
+        </div>
+    {% endfor %}
+{% endblock %}
