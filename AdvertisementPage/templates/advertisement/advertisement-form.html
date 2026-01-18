@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if advertisement_object %}Оновлення{% else %}Створення{% endif %} повідомлення
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/advertisement.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-12">
+
+            <nav class="mb-4 text-center">
+                <a href="{% if advertisement_object %}{% url 'advertisement-detail' advertisement_object.pk %}{% else %}{% url 'advertisement-list' %}{% endif %}" class="ad-link small text-uppercase ls-2">
+                    <i class="bi bi-chevron-left"></i> {% if advertisement_object %}До події{% else %}До списку{% endif %}
+                </a>
+            </nav>
+
+            <div class="card p-4 p-md-5 shadow-sm border-0" style="border-radius: 20px;">
+                <div class="text-center mb-4">
+                    <h2 class="fw-800 text-uppercase">
+                        {% if advertisement_object %}Редагування{% else %}Нове оголошення{% endif %}
+                    </h2>
+                    <p class="text-muted small">Заповніть поля нижче</p>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="custom-form">
+                    {% csrf_token %}
+
+                    {# Вывод общих ошибок формы #}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-bold small text-secondary">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in field.errors %}
+                                        <div><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-round py-3 shadow-sm fw-bold">
+                            {% if advertisement_object %}Зберегти зміни{% else %}Опублікувати{% endif %}
+                        </button>
+
+                        <a href="{% if advertisement_object %}{% url 'advertisement-detail' advertisement_object.pk %}{% else %}{% url 'advertisement-list' %}{% endif %}"
+                           class="btn btn-link text-muted text-decoration-none small">
+                            Скасувати
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

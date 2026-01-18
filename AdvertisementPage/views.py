@@ -14,14 +14,14 @@ class AdvertisementListView(LoginRequiredMixin, ListView):
 class AdvertisementCreateView(LoginRequiredMixin, mp_mixins.AdminRequiredMixin, CreateView):
     model = Advertisement
     form_class = AdvertisementForm
-    template_name = "advertisement/advertisement-create.html"
+    template_name = "advertisement/advertisement-form.html"
     context_object_name = "advertisement_object"
     success_url = reverse_lazy("advertisement-list")
 
 class AdvertisementUpdateView(LoginRequiredMixin, mp_mixins.AdminRequiredMixin, UpdateView):
     model = Advertisement
     form_class = AdvertisementForm
-    template_name = "advertisement/advertisement-update.html"
+    template_name = "advertisement/advertisement-form.html"
     context_object_name = "advertisement_object"
     success_url = reverse_lazy("advertisement-list")
 
