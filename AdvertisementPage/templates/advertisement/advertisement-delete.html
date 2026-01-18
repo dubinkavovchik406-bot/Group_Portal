@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Видалення Повідомлення{% endblock %}
+
+{% block content %}
+
+<h1>Видалити Повідомлення?</h1>
+<h2>{{ advertisement_object.name }}</h2>
+
+
+<form method="post">
+		{% csrf_token %}
+		<button type="submit">Так, видалити</button>
+</form>
+
+{% endblock %}
