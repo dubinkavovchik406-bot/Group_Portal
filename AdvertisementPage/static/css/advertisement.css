@@ -1,0 +1,149 @@
+/* --- 1. ПЕРЕМЕННЫЕ И ОСНОВЫ --- */
+:root {
+    --portal-primary: #ff9f43;
+    --portal-primary-hover: #e67e22;
+    --ad-accent-soft: rgba(255, 159, 67, 0.1);
+    --ad-shadow: rgba(255, 159, 67, 0.2);
+    --portal-dark: #2d3436;
+}
+
+/* Утилиты */
+.fw-800 { font-weight: 800 !important; }
+.ls-2 { letter-spacing: 2px !important; }
+
+/* Кнопки и акценты */
+.brand-dot { color: var(--portal-primary) !important; }
+
+.btn-primary {
+    background-color: var(--portal-primary) !important;
+    border-color: var(--portal-primary) !important;
+    color: #fff !important;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--portal-primary-hover) !important;
+    box-shadow: 0 4px 12px var(--ad-shadow) !important;
+    transform: translateY(-1px);
+}
+
+.btn-round { border-radius: 50px !important; }
+
+/* --- 2. ЛЕНТА ОБЪЯВЛЕНИЙ (LIST) --- */
+.ad-card {
+    background: #ffffff;
+    border-radius: 15px;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ad-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--ad-shadow) !important;
+    border-color: var(--portal-primary) !important;
+}
+
+.ad-link {
+    color: var(--portal-primary) !important;
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.2s;
+}
+
+/* --- 3. МЕДИА-КОНТЕНТ (DETAIL) --- */
+.ad-media-wrapper {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #f8f9fa; /* Светлый фон для картинок */
+    line-height: 0;
+    transition: transform 0.3s ease;
+}
+
+/* Если внутри видео или YouTube — фон черный */
+.ad-media-wrapper:has(video),
+.ad-media-wrapper:has(iframe) {
+    background-color: #000;
+}
+
+.ad-media-wrapper img {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
+    display: block;
+    background-color: #fff;
+}
+
+.ad-media-wrapper video,
+.ad-media-wrapper iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    display: block;
+}
+
+/* Заглушка ссылки (если видео не встроилось) */
+.ad-media-wrapper a {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem !important; /* Увеличили отступы */
+    color: var(--portal-primary) !important;
+    text-decoration: none !important;
+    font-weight: 700;
+    min-height: 300px;
+    background-color: #f8f9fa;
+    line-height: 1.4 !important; /* Возвращаем нормальную высоту строки для текста */
+    text-align: center;
+}
+
+.ad-media-wrapper a::before {
+    content: "\f5b0";
+    font-family: "bootstrap-icons";
+    font-size: 4rem; /* Сделали чуть крупнее */
+    margin-bottom: 20px; /* ДОБАВИЛИ ОТСТУП между иконкой и текстом */
+    display: block;
+    opacity: 0.8;
+}
+
+.ad-media-wrapper a:hover {
+    background-color: #f1f2f3;
+}
+
+.ad-media-wrapper a:hover::before {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* --- 4. МОДАЛЬНОЕ ОКНО (LIGHTBOX) --- */
+.modal-backdrop.show {
+    opacity: 0.9 !important;
+    background-color: #000;
+}
+
+#imageLightbox .modal-content {
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* --- 5. ФОРМЫ --- */
+.form-control:focus {
+    border-color: var(--portal-primary) !important;
+    box-shadow: 0 0 0 0.25rem var(--ad-accent-soft) !important;
+}
+
+/* --- 6. АДАПТИВНОСТЬ --- */
+@media (max-width: 768px) {
+    .ad-card { padding: 1rem !important; }
+    h1 { font-size: 1.75rem !important; }
+
+    .ad-media-wrapper {
+        border-radius: 15px;
+    }
+}
