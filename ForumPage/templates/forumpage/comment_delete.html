@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Видалення повідомлення{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="forum-form-card" style="border-left-color: var(--forum-danger);">
+            <div class="text-center mb-4">
+                <div class="display-4 text-danger mb-3">
+                    <i class="bi bi-exclamation-octagon"></i>
+                </div>
+                <h2 class="fw-800">Видалити пост?</h2>
+                <p class="text-muted">Цю дію неможливо буде скасувати. Ви впевнені?</p>
+            </div>
+
+            <div class="p-3 bg-light rounded-3 mb-4 border-start border-3 border-danger">
+                <p class="mb-0 text-secondary small italic">
+                    "{{ object.content|truncatechars:150 }}"
+                </p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger btn-round py-3 fw-bold">
+                        <i class="bi bi-trash3 me-2"></i> Так, видалити остаточно
+                    </button>
+                    <a href="{% url 'comment-detail' object.pk %}" class="btn btn-link text-muted text-decoration-none fw-bold mt-2">
+                        Я передумав, залишити
+                    </a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

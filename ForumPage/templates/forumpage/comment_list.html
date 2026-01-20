@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Форум | Спільнота{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-5 align-items-center text-start">
+        <div class="col-md-7">
+            <h1 class="fw-800 mb-1">Форум спільноти <span class="brand-dot">.</span></h1>
+            <p class="text-muted small">Обмінюйтесь досвідом та ставте запитання</p>
+        </div>
+        <div class="col-md-5 text-md-end text-start">
+            <a href="{% url 'comment-create' %}" class="btn btn-create-forum px-4">
+                <i class="bi bi-plus-lg me-2"></i>Додати коментар
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            {% for comment in comments %}
+                <div class="forum-post-branch mb-4 shadow-sm">
+    <div class="row g-0"> <div class="col-auto pe-3">
+            <div class="forum-avatar">
+                {{ comment.author.username|slice:":1"|upper }}
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="fw-bold text-dark mb-0">{{ comment.author.username }}</h6>
+                    <div class="mt-1">
+                        {% if comment.author.is_admin %}
+                            <span class="author-badge badge-admin">Адмін</span>
+                        {% elif comment.author.is_moderator %}
+                            <span class="author-badge badge-moderator">Модер</span>
+                        {% else %}
+                            <span class="author-badge badge-user">Учасник</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <span class="text-muted small">{{ comment.created_at|timesince }}</span>
+            </div>
+
+            <p class="text-secondary mt-3 mb-0" style="text-align: left !important; display: block !important; width: 100%;">
+                {{ comment.content|truncatechars:250 }}
+            </p>
+
+            {% if comment.media %}
+                <div class="mt-3">
+                    <img src="{{ comment.media.url }}" class="img-fluid rounded-4">
+                </div>
+            {% endif %}
+
+            <div class="d-flex align-items-center mt-3 pt-3 border-top border-light gap-2">
+                <form method="post" action="{% url 'comment-like' comment.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-round px-3 py-1 d-flex align-items-center gap-2 {% if user in comment.likes.all %}btn-like-active{% else %}btn-like-outline{% endif %}">
+                        <i class="bi {% if user in comment.likes.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                        <span class="fw-bold small">{{ comment.likes.count }}</span>
+                    </button>
+                </form>
+                <a href="{% url 'comment-detail' comment.pk %}" class="btn btn-link p-0 text-decoration-none fw-bold small ms-2" style="color: var(--forum-indigo);">
+                    Дивитись деталі →
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+            {% empty %}
+                <div class="text-center py-5">
+                    <h4 class="text-muted">На форумі поки порожньо</h4>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

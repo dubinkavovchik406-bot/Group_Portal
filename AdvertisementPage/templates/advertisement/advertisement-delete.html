@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Видалення Повідомлення{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/advertisement.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 text-center">
+
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-danger-subtle text-danger rounded-circle" style="width: 80px; height: 80px;">
+                    <i class="bi bi-exclamation-triangle" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 20px;">
+                <h1 class="fw-800 text-uppercase mb-3" style="letter-spacing: -1px;">Видалити подію?</h1>
+
+                <p class="text-muted mb-4">
+                    Ви збираєтеся видалити повідомлення: <br>
+                    <strong class="text-dark">"{{ advertisement_object.name }}"</strong>. <br>
+                    Цю дію неможливо буде скасувати.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-round py-3 fw-bold shadow-sm">
+                            <i class="bi bi-trash3 me-2"></i> Підтверджую видалення
+                        </button>
+
+                        <a href="{% url 'advertisement-detail' advertisement_object.pk %}" class="btn btn-link text-muted text-decoration-none small mt-2">
+                            Ні, повернутися назад
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
