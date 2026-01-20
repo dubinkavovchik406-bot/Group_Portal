@@ -13,64 +13,94 @@
 
     <nav class="mb-4">
         <a href="{% url 'advertisement-list' %}" class="ad-link small text-uppercase ls-2">
-            <i class="bi bi-chevron-left"></i> Назад до стрічки
+            <i class="bi bi-chevron-left"></i> Назад
         </a>
     </nav>
 
-    {% if advertisement_object.media or advertisement_object.youtube_url %}
-        <div class="row g-4 justify-content-center">
-            <div class="col-12 col-lg-7">
-                {% if advertisement_object.media and not advertisement_object.youtube_url %}
-                    <div class="ad-media-wrapper shadow-sm" data-bs-toggle="modal" data-bs-target="#imageLightbox" style="cursor: zoom-in;">
-                        {% render_media advertisement_object %}
+    <div class="row g-4">
+
+        {# --- ЛІВА КОЛОНКА: ТЕКСТ ТА КНОПКИ --- #}
+        <div class="col-12 {% if advertisement_object.media or advertisement_object.youtube_url %}col-lg-7{% else %}col-lg-10 offset-lg-1{% endif %}">
+            <div class="card border-0 shadow-sm p-4 p-md-5 h-100" style="border-radius: 24px;">
+                <div class="mb-4">
+                    <h1 class="ad-title mb-4">{{ advertisement_object.name }}</h1>
+
+                    <div class="ad-text-content text-secondary" style="font-size: 1rem; line-height: 1.6;">
+                        {{ advertisement_object.about|linebreaks }}
                     </div>
-                {% else %}
-                    <div class="ad-media-wrapper shadow-sm">
-                        {% render_media advertisement_object %}
-                    </div>
+                </div>
+
+                {% if user.is_staff %}
+                <div class="pt-3 border-top d-flex align-items-center gap-2">
+                    <a href="{% url 'advertisement-update' advertisement_object.pk %}" class="btn btn-outline-primary btn-action-sm">
+                        Редагувати
+                    </a>
+                    <a href="{% url 'advertisement-delete' advertisement_object.pk %}" class="btn btn-outline-danger btn-delete-sm">
+                        <i class="bi bi-trash3"></i>
+                    </a>
+                </div>
                 {% endif %}
             </div>
+        </div>
 
+        {# --- ПРАВА КОЛОНКА: МЕДІА (ФАЙЛИ ТА YOUTUBE) --- #}
+        {% if advertisement_object.media or advertisement_object.youtube_url %}
             <div class="col-12 col-lg-5">
-                <div class="card border-0 shadow-sm p-4 p-md-5 h-100" style="border-radius: 20px;">
-                    <h1 class="fw-800 mb-4" style="letter-spacing: -1px; line-height: 1.2;">
-                        {{ advertisement_object.name }}
-                    </h1>
-                    <div class="ad-text-content text-secondary mb-5" style="font-size: 1.05rem; line-height: 1.6;">
-                        {{ advertisement_object.about|linebreaks }}
-                    </div>
-                    {% if user.is_staff %}
-                    <div class="mt-auto pt-4 border-top d-flex gap-2">
-                        <a href="{% url 'advertisement-update' advertisement_object.pk %}" class="btn btn-outline-primary btn-round flex-grow-1 py-2 fw-bold">Редагувати</a>
-                        <a href="{% url 'advertisement-delete' advertisement_object.pk %}" class="btn btn-outline-danger btn-round px-3 py-2"><i class="bi bi-trash3"></i></a>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+                <div class="media-stack">
 
-    {% else %}
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-9">
-                <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 20px;">
-                    <h1 class="fw-800 mb-4 text-center" style="letter-spacing: -1px;">
-                        {{ advertisement_object.name }}
-                    </h1>
-                    <div class="ad-text-content text-secondary mb-5 text-center" style="font-size: 1.1rem; line-height: 1.7;">
-                        {{ advertisement_object.about|linebreaks }}
-                    </div>
-                    {% if user.is_staff %}
-                    <div class="pt-4 border-top d-flex justify-content-center gap-2">
-                        <a href="{% url 'advertisement-update' advertisement_object.pk %}" class="btn btn-outline-primary btn-round px-5 py-2 fw-bold">Редагувати</a>
-                        <a href="{% url 'advertisement-delete' advertisement_object.pk %}" class="btn btn-outline-danger btn-round px-3 py-2"><i class="bi bi-trash3"></i></a>
-                    </div>
+                    {# 1. Завантажений файл #}
+                    {% if advertisement_object.media %}
+                        <div class="ad-media-wrapper shadow-sm p-2 bg-white text-center">
+                            {% if advertisement_object.media.url|is_video %}
+                                <video width="100%" controls class="rounded-3 shadow-sm">
+                                    <source src="{{ advertisement_object.media.url }}">
+                                </video>
+                                <a href="{{ advertisement_object.media.url }}" download class="media-link-alt">
+                                    <i class="bi bi-download"></i> Завантажити файл
+                                </a>
+                            {% else %}
+                                <div data-bs-toggle="modal" data-bs-target="#imageLightbox" style="cursor: zoom-in;">
+                                    <img src="{{ advertisement_object.media.url }}" class="img-fluid rounded-3 w-100 shadow-sm">
+                                </div>
+                                <a href="{{ advertisement_object.media.url }}" download class="media-link-alt">
+                                    <i class="bi bi-download"></i> Завантажити фото
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {# 2. YouTube Відео #}
+                    {% if advertisement_object.youtube_url %}
+                        {% with y_id=advertisement_object.youtube_url|youtube_id %}
+                        <div class="ad-media-wrapper shadow-sm p-3 bg-white">
+                            <h6 class="fw-bold mb-3 small text-muted text-uppercase ls-1">
+                                <i class="bi bi-youtube text-danger me-1"></i> Відеоогляд
+                            </h6>
+
+                            {% if y_id %}
+                                <div class="ratio ratio-16x9 shadow-sm">
+                                    <iframe src="https://www.youtube.com/embed/{{ y_id }}" allowfullscreen></iframe>
+                                </div>
+                                <a href="{{ advertisement_object.youtube_url }}" target="_blank" class="media-link-alt">
+                                    <i class="bi bi-box-arrow-up-right"></i> Дивитися на YouTube
+                                </a>
+                            {% else %}
+                                {# Якщо посилання не валідне для плеєра #}
+                                <a href="{{ advertisement_object.youtube_url }}" target="_blank" class="media-link-alt text-danger">
+                                    <i class="bi bi-exclamation-triangle-fill"></i> Не вдається переглянути? Дивись на YouTube
+                                </a>
+                            {% endif %}
+                        </div>
+                        {% endwith %}
                     {% endif %}
                 </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
+
+    </div>
 </div>
 
+{# Лайтбокс для фото #}
 {% if advertisement_object.media %}
 <div class="modal fade" id="imageLightbox" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">

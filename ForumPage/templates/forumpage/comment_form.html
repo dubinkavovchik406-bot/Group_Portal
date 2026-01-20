@@ -22,7 +22,7 @@
             </ol>
         </nav>
 
-        <div class="forum-form-card">
+        <div class="forum-form-card shadow-sm p-4 p-md-5" style="background: #fff; border-radius: 20px;">
             <h2 class="fw-800 mb-4">
                 {% if object.pk %}
                     Редагувати запис <span class="brand-dot">.</span>
@@ -41,22 +41,34 @@
 
                 <div class="mb-4">
                     <label class="form-label fw-bold">Зображення</label>
-                    <div class="file-upload-wrapper" id="wrapper">
+                    <div class="file-upload-wrapper {% if object.media %}has-file{% endif %}" id="wrapper">
+
+                        <button type="button" id="btn-remove" class="btn-remove-file" style="{% if object.media %}display: flex;{% else %}display: none;{% endif %}">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+
                         <div class="file-upload-label" id="drop-zone">
-                            <img id="image-preview" src="#" alt="Preview">
-                            <i class="bi bi-cloud-arrow-up mb-2" style="font-size: 2rem;"></i>
+                            <img id="image-preview" src="{% if object.media %}{{ object.media.url }}{% else %}#{% endif %}"
+                                 alt="Preview" style="{% if object.media %}display: block;{% else %}display: none;{% endif %}">
+
+                            <i class="bi bi-cloud-arrow-up mb-2 icon-cloud" style="font-size: 2rem; {% if object.media %}display: none;{% endif %}"></i>
+
                             <span id="file-text">
-                                {% if object.media %}Змінити поточне зображення{% else %}Натисніть, щоб додати фото{% endif %}
+                                {% if object.media %}Зображення завантажено{% else %}Натисніть, щоб додати фото{% endif %}
                             </span>
                         </div>
+
                         <input type="file" name="media" id="media-input" accept="image/*">
+
+                        <input type="checkbox" name="media-clear" id="media-clear-id" style="display: none;">
                     </div>
                 </div>
+
                 <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-5">
                     <a href="{% if object.pk %}{% url 'comment-detail' object.pk %}{% else %}{% url 'comment-list'%}{% endif %}" class="text-muted text-decoration-none fw-bold small order-2 order-sm-1">
                         Скасувати
                     </a>
-                    <button type="submit" class="btn-forum-save w-100 w-sm-auto order-1 order-sm-2">
+                    <button type="submit" class="btn-forum-save w-100 w-sm-auto order-1 order-sm-2 py-2 px-4">
                         {% if object.pk %}Зберегти зміни{% else %}Опублікувати{% endif %}
                     </button>
                 </div>
@@ -70,18 +82,23 @@
     const fileText = document.getElementById('file-text');
     const wrapper = document.getElementById('wrapper');
     const preview = document.getElementById('image-preview');
+    const btnRemove = document.getElementById('btn-remove');
+    const clearCheckbox = document.getElementById('media-clear-id');
+    const cloudIcon = document.querySelector('.icon-cloud');
 
+    // Обробка вибору файлу
     fileInput.addEventListener('change', function(e) {
         if (this.files && this.files[0]) {
             const file = this.files[0];
 
-            // Обновляем текст
             fileText.innerHTML = `<strong>Обрано:</strong> ${file.name}`;
-
-            // Добавляем класс для смены стиля (зеленая рамка)
             wrapper.classList.add('has-file');
+            btnRemove.style.display = 'flex';
+            if(cloudIcon) cloudIcon.style.display = 'none';
 
-            // Показываем предпросмотр
+            // Якщо обрали новий файл — скасовуємо видалення старого
+            if(clearCheckbox) clearCheckbox.checked = false;
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 preview.src = e.target.result;
@@ -89,6 +106,26 @@
             }
             reader.readAsDataURL(file);
         }
+    });
+
+    // Обробка натискання на кнопку видалення
+    btnRemove.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // 1. Очищуємо значення інпута
+        fileInput.value = "";
+
+        // 2. Повертаємо візуал до початкового стану
+        preview.style.display = 'none';
+        preview.src = "#";
+        if(cloudIcon) cloudIcon.style.display = 'block';
+
+        fileText.innerText = "Натисніть, щоб додати фото";
+        wrapper.classList.remove('has-file');
+        btnRemove.style.display = 'none';
+
+        // 3. Ставимо галочку "очистити" для Django
+        if(clearCheckbox) clearCheckbox.checked = true;
     });
 </script>
 {% endblock %}
