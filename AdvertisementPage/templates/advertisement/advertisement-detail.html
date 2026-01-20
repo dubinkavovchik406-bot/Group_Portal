@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load media_tags %}
+
+{% block title %}Деталі Повідомлення{% endblock %}
+
+{% block content %}
+<h6>Ім'я{{ advertisement_object.name }}</h6>
+<h2>{{ advertisement_object.about }}</h2>
+
+{% render_media advertisement_object %}
+
+{% endblock %}
