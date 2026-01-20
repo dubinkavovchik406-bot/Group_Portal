@@ -1,15 +1,42 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="{% url 'group-list' %}">
             GROUP<span class="brand-dot">PORTAL</span>
         </a>
+        {% if user.is_authenticated %}
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <div class="d-flex align-items-center ms-auto order-lg-last">
-            {% if user.is_authenticated %}
-                {# Видим только если залогинены #}
-                <span class="text-muted small me-2 d-inline-block">
-                    Привіт, <span class="fw-bold text-dark">{{ user.username }}</span>
-                </span>
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav mx-auto nav-pills-custom mt-3 mt-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-ads-pill {% if request.resolver_match.url_name == 'advertisement-list' %}active-pill{% endif %}"
+                           href="{% url 'advertisement-list' %}">
+                            <i class="bi bi-megaphone-fill me-1"></i> Оголошення
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-forum-pill {% if request.resolver_match.url_name == 'comment-list' %}active-pill{% endif %}"
+                           href="{% url 'comment-list' %}">
+                            <i class="bi bi-chat-square-dots-fill me-1"></i> Форум
+                        </a>
+                    </li>
+                </ul>
+
+            <div class="d-flex align-items-center ms-auto mt-3 mt-lg-0">
+                <div class="d-flex align-items-center me-3">
+                    <a href="{% url 'user-detail' user.pk %}" class="text-decoration-none d-flex align-items-center profile-link-header">
+                        <div class="avatar-circle avatar-header me-2">
+                            {{ user.username|slice:":1"|upper }}
+                        </div>
+
+                        <span class="text-dark small fw-bold d-none d-sm-inline-block">
+                            {{ user.username }}
+                        </span>
+                    </a>
+                </div>
 
                 <form action="{% url 'logout' %}" method="post" class="m-0">
                     {% csrf_token %}
@@ -17,12 +44,8 @@
                         Вийти
                     </button>
                 </form>
-            {% else %}
-                {# Видим если гость #}
-                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-round py-1 px-3" style="font-size: 0.8rem;">
-                    Увійти
-                </a>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
     </div>
 </nav>

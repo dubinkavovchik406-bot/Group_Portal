@@ -3,12 +3,16 @@
     --portal-dark: #2d3436;
     --portal-primary: #0d6efd;
     --portal-bg-gray: #f1f3f5;
+
+    /* Цвета модулей (Профессиональная палитра) */
+    --color-ads: #f59e0b;       /* Янтарный (Amber) */
+    --color-ads-light: #fef3c7; /* Светло-янтарный для фонов */
+    --color-forum: #6366f1;     /* Индиго (Indigo) */
+    --color-forum-light: #e0e7ff; /* Светло-индиго для фонов */
 }
 
 html {
-    /* Резервируем место под скроллбар всегда. Это лечит "прыжки" шапки вправо */
     overflow-y: scroll;
-    /* Убираем горизонтальный скролл на корню */
     overflow-x: hidden;
 }
 
@@ -16,7 +20,6 @@ html {
 body {
     margin: 0 !important;
     padding: 0 !important;
-    /* ИСПОЛЬЗУЕМ 100% вместо 100vw, чтобы не залезать под скроллбар! */
     width: 100% !important;
 
     font-family: 'Inter', sans-serif;
@@ -27,9 +30,102 @@ body {
     min-height: 100vh;
 }
 
-/* ФИКС ДЛЯ КАРТОЧЕК:
-   1. Оставляем margin 0, чтобы ряд не вылезал за экран.
-   2. УБРАЛИ --bs-gutter-x: 0, чтобы вернуть отступы между карточками! */
+.avatar-header {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+/* Базовый стиль баблов */
+.nav-pills-custom .nav-link {
+    border-radius: 50px;
+    padding: 7px 18px !important;
+    margin: 0 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid transparent;
+}
+
+/* ОБЪЯВЛЕНИЯ (Янтарный -25% яркости) */
+.nav-link-ads-pill {
+    color: var(--color-ads) !important;
+    background-color: rgba(245, 158, 11, 0.1); /* Легкий оттенок в покое */
+}
+.nav-link-ads-pill:hover,
+.nav-link-ads-pill.active-pill {
+    /* Насыщенный янтарный на 75% яркости/непрозрачности */
+    background-color: rgba(245, 158, 11, 0.75) !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.15);
+}
+
+/* ФОРУМ (Индиго -25% яркости) */
+.nav-link-forum-pill {
+    color: var(--color-forum) !important;
+    background-color: rgba(99, 102, 241, 0.1);
+}
+.nav-link-forum-pill:hover,
+.nav-link-forum-pill.active-pill {
+    /* Насыщенный индиго на 75% яркости/непрозрачности */
+    background-color: rgba(99, 102, 241, 0.75) !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.15);
+}
+
+.nav-link-custom {
+    color: var(--portal-dark) !important;
+    position: relative;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+}
+
+.nav-link-custom:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+/* Цветные индикаторы (точки) при наведении */
+.nav-link-ads:hover { color: var(--color-ads) !important; }
+.nav-link-forum:hover { color: var(--color-forum) !important; }
+
+/* Или вариант с подчеркиванием, если хочешь больше стиля */
+.nav-link-custom::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 5px;
+    left: 50%;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link-ads:hover::after { width: 60%; background-color: var(--color-ads); }
+.nav-link-forum:hover::after { width: 60%; background-color: var(--color-forum); }
+
+/* Стили для карточек модулей */
+.card-ads {
+    border-left: 5px solid var(--color-ads) !important;
+}
+.icon-box-ads {
+    background-color: var(--color-ads-light);
+    color: var(--color-ads);
+}
+
+.card-forum {
+    border-left: 5px solid var(--color-forum) !important;
+}
+.icon-box-forum {
+    background-color: var(--color-forum-light);
+    color: var(--color-forum);
+}
+
+/* Плавная смена цвета при наведении */
+.card-ads:hover { border-left-width: 10px !important; }
+.card-forum:hover { border-left-width: 10px !important; }
+
 .row {
     margin-right: -15px !important;
     margin-left: -15px !important;
@@ -111,7 +207,7 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
     .container {
         max-width: 1600px !important; /* Делаем контент шире */
     }
-    
+
     /* Немного увеличиваем базовый шрифт для читаемости */
     html {
         font-size: 17px; 
@@ -126,11 +222,11 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
 /* 4K и ULTRA-WIDE (2560px+) */
 @media (min-width: 2560px) {
     .container {
-        max-width: 2000px !important; /* Максимальная ширина */
+        max-width: 2000px !important;
     }
     
     html {
-        font-size: 18px; /* Еще крупнее шрифт */
+        font-size: 18px;
     }
 }
 
@@ -272,15 +368,24 @@ h1, h2, h3, h4, h5, h6, p, span, .card-title, .btn, .text-break {
 .avatar-circle {
     width: 42px;
     height: 42px;
-    background: linear-gradient(135deg, var(--portal-primary), #0056b3);
-    color: white;
+    background: linear-gradient(135deg, #0d6efd, #0056b3) !important;
+    color: white !important;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
     font-size: 1.1rem;
-    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.15);
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.15) !important;
+}
+
+/* Мягкий эффект для профиля в шапке вместо прыжка */
+.profile-link-header {
+    transition: opacity 0.2s ease;
+}
+
+.profile-link-header:hover {
+    opacity: 0.8; /* Просто легкое затухание при наведении */
 }
 
 .table thead th {

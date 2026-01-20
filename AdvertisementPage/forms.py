@@ -14,6 +14,6 @@ class AdvertisementForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Автоматически добавляем класс Bootstrap каждому полю
-        for field in self.fields.values():
-            field.widget.attrs.update({'class': 'form-control'})
+        for name, field in self.fields.items():
+            if name != 'media': # Не портим наш кастомный инпут
+                field.widget.attrs.update({'class': 'form-control'})

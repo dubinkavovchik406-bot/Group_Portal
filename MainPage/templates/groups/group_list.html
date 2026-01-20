@@ -1,10 +1,44 @@
-
 {% extends 'base.html' %}
 
 {% block title %}Список груп{% endblock %}
 
 {% block content %}
 <div class="container-fluid px-0">
+
+    <div class="row g-3 mb-5">
+        <div class="col-12 col-md-6">
+            <a href="{% url 'advertisement-list' %}" class="text-decoration-none">
+                <div class="card border-0 shadow-sm transition-hover h-100 card-ads">
+                    <div class="card-body p-4 d-flex align-items-center">
+                        <div class="icon-box-ads p-3 rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
+                            <i class="bi bi-megaphone-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1 text-dark">Дошка оголошень</h5>
+                            <p class="text-muted small mb-0">Свіжі новини та пропозиції спільноти</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <a href="{% url 'comment-list' %}" class="text-decoration-none">
+                <div class="card border-0 shadow-sm transition-hover h-100 card-forum">
+                    <div class="card-body p-4 d-flex align-items-center">
+                        <div class="icon-box-forum p-3 rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 56px; height: 56px;">
+                            <i class="bi bi-chat-square-dots-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1 text-dark">Форум порталу</h5>
+                            <p class="text-muted small mb-0">Обговорення, питання та живе спілкування</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
     <div class="row align-items-center mb-4 g-3">
         <div class="col-12 col-md-4 col-lg-6 text-center text-md-start">
             <h2 class="fw-bold m-0" style="overflow-wrap: break-word;">Доступні групи</h2>
@@ -42,7 +76,6 @@
                             Переглянути →
                         </a>
 
-                        {# Кнопка налаштувань (Шестерня) #}
                         {% if user.is_admin or user.is_moderator and user.group == group %}
                             <a href="{% url 'group-update' group.pk %}" class="btn btn-sm btn-outline-light text-dark p-0 d-flex align-items-center justify-content-center rounded-circle shadow-sm" style="width: 32px; height: 32px;" title="Редагувати">
                                 <i class="bi bi-gear-fill"></i>
