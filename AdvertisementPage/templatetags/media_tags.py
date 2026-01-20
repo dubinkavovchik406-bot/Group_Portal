@@ -26,7 +26,7 @@ def render_media(adv):
                             </div>
                             <div style="margin-top: 5px;">
                                 <a href="https://www.youtube.com/watch?v={video_id}" target="_blank" style="font-size: 12px; color: #666; text-decoration: none;">
-                                    🔗 Не воспроизводится? Смотреть на YouTube
+                                    🔗 Не відображається відео? Дивитися на YouTube
                                 </a>
                             </div>
                         ''')

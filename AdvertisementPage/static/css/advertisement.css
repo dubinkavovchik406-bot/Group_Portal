@@ -1,146 +1,149 @@
-
-/* Переопределяем цвета портала для этого модуля */
+/* --- 1. ПЕРЕМЕННЫЕ И ОСНОВЫ --- */
 :root {
-    --portal-primary: #ff9f43; /* Сочный оранжевый / Янтарный */
-    --portal-primary-hover: #f39c12;
-    --ad-card-shadow: rgba(255, 159, 67, 0.15);
+    --portal-primary: #ff9f43;
+    --portal-primary-hover: #e67e22;
+    --ad-accent-soft: rgba(255, 159, 67, 0.1);
+    --ad-shadow: rgba(255, 159, 67, 0.2);
+    --portal-dark: #2d3436;
 }
 
-/* Сетка для карточек */
-.ad-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 25px;
-    margin-top: 2rem;
+/* Утилиты */
+.fw-800 { font-weight: 800 !important; }
+.ls-2 { letter-spacing: 2px !important; }
+
+/* Кнопки и акценты */
+.brand-dot { color: var(--portal-primary) !important; }
+
+.btn-primary {
+    background-color: var(--portal-primary) !important;
+    border-color: var(--portal-primary) !important;
+    color: #fff !important;
+    border-radius: 50px;
+    transition: all 0.3s ease;
 }
 
-/* Стилизация карточки объявления */
+.btn-primary:hover {
+    background-color: var(--portal-primary-hover) !important;
+    box-shadow: 0 4px 12px var(--ad-shadow) !important;
+    transform: translateY(-1px);
+}
+
+.btn-round { border-radius: 50px !important; }
+
+/* --- 2. ЛЕНТА ОБЪЯВЛЕНИЙ (LIST) --- */
 .ad-card {
     background: #ffffff;
-    border-radius: 16px;
-    border: none;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .ad-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px var(--ad-card-shadow) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--ad-shadow) !important;
+    border-color: var(--portal-primary) !important;
 }
 
-/* Контент внутри карточки */
-.ad-card-body {
-    padding: 20px;
-    flex-grow: 1;
-}
-
-.ad-card-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--portal-dark);
-    margin-bottom: 10px;
-}
-
-/* Стили для ссылок в стиле твоего портала */
 .ad-link {
-    color: var(--portal-primary);
+    color: var(--portal-primary) !important;
     text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    display: inline-flex;
-    align-items: center;
-    transition: color 0.2s;
-}
-
-.ad-link:hover {
-    color: var(--portal-primary-hover);
-}
-
-.ad-link i {
-    margin-left: 5px;
-}
-
-/* --- СЕТКА ОБЪЯВЛЕНИЙ (АДАПТИВНАЯ) --- */
-.ad-grid {
-    display: grid;
-    /* Автоматически заполняем ряд. Минимум 320px на карточку, иначе перенос */
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px; /* Отступы между карточками */
-    margin-bottom: 3rem;
-}
-
-/* Специфика карточки объявления, наследующая твой основной .card */
-.ad-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Чтобы все карточки в ряду были одной высоты */
-    border: none; /* Убираем стандартную рамку, у нас есть тени */
-    overflow: hidden; /* Чтобы видео не вылезало за скругления */
-}
-
-/* Заголовок объявления */
-.ad-title {
     font-weight: 700;
-    font-size: 1.15rem;
-    margin-bottom: 0.5rem;
-    color: var(--portal-dark);
+    transition: 0.2s;
 }
 
-/* Текст описания */
-.ad-text {
-    font-size: 0.95rem;
-    color: #636e72;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-    flex-grow: 1; /* Текст толкает медиа вниз */
-}
-
-/* --- МЕДИА КОНТЕЙНЕРЫ (ФОТО/ВИДЕО) --- */
-.ad-media-container {
-    margin-top: auto; /* Всегда прижимаем к низу карточки */
-    border-radius: 8px;
-    overflow: hidden;
-    background: #000; /* Фон для видео */
-    position: relative;
-}
-
-/* Youtube Wrapper (16:9) */
-.video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-}
-
-.video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* --- 3. МЕДИА-КОНТЕНТ (DETAIL) --- */
+.ad-media-wrapper {
     width: 100%;
-    height: 100%;
-    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #f8f9fa; /* Светлый фон для картинок */
+    line-height: 0;
+    transition: transform 0.3s ease;
 }
 
-/* Обычные картинки/видео файлы */
-.ad-media-container img,
-.ad-media-container video {
+/* Если внутри видео или YouTube — фон черный */
+.ad-media-wrapper:has(video),
+.ad-media-wrapper:has(iframe) {
+    background-color: #000;
+}
+
+.ad-media-wrapper img {
     width: 100%;
     height: auto;
+    max-height: 80vh;
+    object-fit: contain;
     display: block;
-    max-height: 400px; /* Ограничение высоты для длинных картинок */
-    object-fit: cover;
+    background-color: #fff;
 }
 
-/* Кнопка действий (если захочешь добавить удаление/редактирование) */
-.ad-actions {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid #f1f3f5;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+.ad-media-wrapper video,
+.ad-media-wrapper iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    display: block;
+}
+
+/* Заглушка ссылки (если видео не встроилось) */
+.ad-media-wrapper a {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem !important; /* Увеличили отступы */
+    color: var(--portal-primary) !important;
+    text-decoration: none !important;
+    font-weight: 700;
+    min-height: 300px;
+    background-color: #f8f9fa;
+    line-height: 1.4 !important; /* Возвращаем нормальную высоту строки для текста */
+    text-align: center;
+}
+
+.ad-media-wrapper a::before {
+    content: "\f5b0";
+    font-family: "bootstrap-icons";
+    font-size: 4rem; /* Сделали чуть крупнее */
+    margin-bottom: 20px; /* ДОБАВИЛИ ОТСТУП между иконкой и текстом */
+    display: block;
+    opacity: 0.8;
+}
+
+.ad-media-wrapper a:hover {
+    background-color: #f1f2f3;
+}
+
+.ad-media-wrapper a:hover::before {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* --- 4. МОДАЛЬНОЕ ОКНО (LIGHTBOX) --- */
+.modal-backdrop.show {
+    opacity: 0.9 !important;
+    background-color: #000;
+}
+
+#imageLightbox .modal-content {
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* --- 5. ФОРМЫ --- */
+.form-control:focus {
+    border-color: var(--portal-primary) !important;
+    box-shadow: 0 0 0 0.25rem var(--ad-accent-soft) !important;
+}
+
+/* --- 6. АДАПТИВНОСТЬ --- */
+@media (max-width: 768px) {
+    .ad-card { padding: 1rem !important; }
+    h1 { font-size: 1.75rem !important; }
+
+    .ad-media-wrapper {
+        border-radius: 15px;
+    }
 }

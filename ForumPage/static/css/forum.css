@@ -1,0 +1,342 @@
+/* --- 1. ПЕРЕМЕННЫЕ И ГЛОБАЛЬНЫЕ ФИКСЫ --- */
+:root {
+    --forum-indigo: #6366f1;
+    --forum-indigo-dark: #4f46e5;
+    --forum-indigo-soft: rgba(99, 102, 241, 0.05);
+    --forum-indigo-border: rgba(99, 102, 241, 0.2);
+    --forum-amber: #f59e0b;
+    --forum-danger: #ef4444;
+}
+
+/* Стили для кастомной загрузки */
+        .file-upload-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Прячем стандартный некрасивый инпут */
+        #media-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0; /* Делаем его невидимым */
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Стилизуем нашу красивую плашку */
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* Эффект при наведении курсора */
+        .file-upload-wrapper:hover .file-upload-label {
+            border-color: var(--forum-indigo, #6366f1);
+            background-color: #f1f5f9;
+            color: var(--forum-indigo, #6366f1);
+        }
+
+        /* Если файл уже выбран (через JS добавим класс) */
+        .file-upload-wrapper.has-file .file-upload-label {
+            border-style: solid;
+            border-color: #22c55e;
+            background-color: #f0fdf4;
+            color: #166534;
+        }
+
+        /* Предпросмотр изображения (опционально, но круто) */
+        #image-preview {
+            display: none;
+            max-width: 150px;
+            max-height: 150px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+
+/* Основные стили для лайтбокса (скрыт по умолчанию) */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 20px;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Магия CSS: показываем блок, когда его ID в URL (#fullview) */
+        .lightbox-overlay:target {
+            display: flex;
+        }
+
+        /* Картинка внутри лайтбокса */
+        .lightbox-overlay img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            object-fit: contain;
+        }
+
+        /* Ссылка-подложка для закрытия при клике на темную область */
+        .lightbox-close-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: zoom-out;
+            z-index: -1;
+        }
+
+        /* Кнопка-крестик */
+        .lightbox-close-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        /* Эффект наведения на маленькую картинку */
+        .post-media-full img {
+            cursor: zoom-in;
+            transition: opacity 0.2s;
+        }
+
+        .post-media-full img:hover {
+            opacity: 0.9;
+        }
+
+
+/* СТОП-ЦЕНТР: Принудительное выравнивание влево для всего контента в карточке */
+.forum-post-branch,
+.forum-post-branch * {
+    text-align: left !important;
+}
+
+.post-body-content {
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+}
+
+.post-body-content p {
+    display: block !important;
+    margin: 0.5rem 0 0 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    width: 100% !important;
+}
+
+/* --- 2. ОБЩИЕ УТИЛИТЫ --- */
+.brand-dot { color: var(--forum-indigo) !important; }
+.fw-800 { font-weight: 800 !important; }
+.btn-round { border-radius: 50px !important; }
+
+/* --- 3. АВАТАРКИ --- */
+.forum-avatar {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, var(--forum-indigo), var(--forum-indigo-dark));
+    color: white !important;
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+/* --- 4. КАРТОЧКА ПОСТА --- */
+.forum-post-branch {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-left: 4px solid #e2e8f0;
+    padding: 1.5rem;
+    transition: all 0.3s ease-out;
+}
+
+.forum-post-branch:hover {
+    border-left-color: var(--forum-indigo);
+    background: var(--forum-indigo-soft);
+}
+
+.post-media-preview img {
+    max-height: 400px;
+    width: auto;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    margin-left: 0 !important; /* Чтобы картинка не центрировалась */
+}
+
+.author-badge {
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 5px;
+    display: inline-block !important;
+}
+.badge-admin { background: #fee2e2; color: var(--forum-danger); }
+.badge-moderator { background: #fef3c7; color: var(--forum-amber); }
+.badge-user { background: var(--forum-indigo-soft); color: var(--forum-indigo); }
+
+/* --- 5. КНОПКИ И ЛАЙКИ (ВСЕГДА КРАСНЫЕ) --- */
+.btn-create-forum, .btn-forum-save {
+    background: var(--forum-indigo) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.7rem 2rem;
+    font-weight: 700;
+    border-radius: 50px;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+    transition: 0.3s;
+}
+
+.btn-create-forum:hover {
+    background: var(--forum-indigo-dark) !important;
+    transform: translateY(-2px);
+    color: white !important;
+}
+
+/* Лайк - Неактивный (Светло-красный) */
+.btn-like-outline {
+    background: #fff1f2 !important;
+    color: #f43f5e !important;
+    border: 1px solid #fecdd3 !important;
+    transition: all 0.2s ease;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn-like-outline:hover {
+    background: #ffe4e6 !important;
+    transform: scale(1.05);
+}
+
+/* Лайк - Активный (Ярко-красный) */
+.btn-like-active {
+    background: #f43f5e !important;
+    color: white !important;
+    border: 1px solid #f43f5e !important;
+    box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25) !important;
+    outline: none !important;
+}
+
+/* --- 6. ТРИ ТОЧКИ (БЕЗ РАМОК) --- */
+.post-actions-btn {
+    color: #cbd5e1;
+    background: transparent;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 4px 10px;
+    transition: 0.2s;
+}
+
+.post-actions-btn:hover {
+    color: var(--forum-indigo);
+    background: var(--forum-indigo-soft);
+    border-radius: 10px;
+}
+
+.dropdown-toggle::after { display: none !important; }
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    padding: 8px;
+}
+
+.dropdown-item {
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 500;
+}
+
+/* --- 7. ФОРМЫ (CREATE/UPDATE) --- */
+.forum-form-card {
+    background: #ffffff;
+    border-radius: 20px;
+    border-left: 6px solid var(--forum-indigo);
+    padding: 2.5rem;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
+.forum-form-card textarea {
+    border: 2px solid #f1f3f5 !important;
+    background-color: #f8fafc !important;
+    border-radius: 15px !important;
+    padding: 1.2rem !important;
+    min-height: 200px;
+    width: 100%;
+    outline: none;
+    transition: 0.3s;
+}
+
+.forum-form-card textarea:focus {
+    border-color: var(--forum-indigo) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 4px var(--forum-indigo-soft) !important;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 1rem;
+    background: #f8fafc;
+    border: 2px dashed #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.file-upload-label:hover {
+    border-color: var(--forum-indigo);
+    background: var(--forum-indigo-soft);
+}
+
+/* --- 8. МЕДИА И АДАПТИВНОСТЬ --- */
+.post-media-preview {
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid var(--forum-indigo-border);
+    margin-top: 1rem;
+}
+
+@media (max-width: 576px) {
+    .forum-post-branch { padding: 1rem; }
+    .forum-avatar { width: 38px; height: 38px; font-size: 1rem; }
+    .forum-form-card { padding: 1.5rem; }
+    .author-badge { font-size: 0.55rem; padding: 2px 6px; }
+}

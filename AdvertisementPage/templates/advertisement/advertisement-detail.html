@@ -1,12 +1,86 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load media_tags %}
 
-{% block title %}Деталі Повідомлення{% endblock %}
+{% block title %}Оголошення: {{ advertisement_object.name }}{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/advertisement.css' %}">
+{% endblock %}
 
 {% block content %}
-<h6>Ім'я{{ advertisement_object.name }}</h6>
-<h2>{{ advertisement_object.about }}</h2>
+<div class="container py-4">
 
-{% render_media advertisement_object %}
+    <nav class="mb-4">
+        <a href="{% url 'advertisement-list' %}" class="ad-link small text-uppercase ls-2">
+            <i class="bi bi-chevron-left"></i> Назад до стрічки
+        </a>
+    </nav>
 
+    {% if advertisement_object.media or advertisement_object.youtube_url %}
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 col-lg-7">
+                {% if advertisement_object.media and not advertisement_object.youtube_url %}
+                    <div class="ad-media-wrapper shadow-sm" data-bs-toggle="modal" data-bs-target="#imageLightbox" style="cursor: zoom-in;">
+                        {% render_media advertisement_object %}
+                    </div>
+                {% else %}
+                    <div class="ad-media-wrapper shadow-sm">
+                        {% render_media advertisement_object %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-12 col-lg-5">
+                <div class="card border-0 shadow-sm p-4 p-md-5 h-100" style="border-radius: 20px;">
+                    <h1 class="fw-800 mb-4" style="letter-spacing: -1px; line-height: 1.2;">
+                        {{ advertisement_object.name }}
+                    </h1>
+                    <div class="ad-text-content text-secondary mb-5" style="font-size: 1.05rem; line-height: 1.6;">
+                        {{ advertisement_object.about|linebreaks }}
+                    </div>
+                    {% if user.is_staff %}
+                    <div class="mt-auto pt-4 border-top d-flex gap-2">
+                        <a href="{% url 'advertisement-update' advertisement_object.pk %}" class="btn btn-outline-primary btn-round flex-grow-1 py-2 fw-bold">Редагувати</a>
+                        <a href="{% url 'advertisement-delete' advertisement_object.pk %}" class="btn btn-outline-danger btn-round px-3 py-2"><i class="bi bi-trash3"></i></a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9">
+                <div class="card border-0 shadow-sm p-4 p-md-5" style="border-radius: 20px;">
+                    <h1 class="fw-800 mb-4 text-center" style="letter-spacing: -1px;">
+                        {{ advertisement_object.name }}
+                    </h1>
+                    <div class="ad-text-content text-secondary mb-5 text-center" style="font-size: 1.1rem; line-height: 1.7;">
+                        {{ advertisement_object.about|linebreaks }}
+                    </div>
+                    {% if user.is_staff %}
+                    <div class="pt-4 border-top d-flex justify-content-center gap-2">
+                        <a href="{% url 'advertisement-update' advertisement_object.pk %}" class="btn btn-outline-primary btn-round px-5 py-2 fw-bold">Редагувати</a>
+                        <a href="{% url 'advertisement-delete' advertisement_object.pk %}" class="btn btn-outline-danger btn-round px-3 py-2"><i class="bi bi-trash3"></i></a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% if advertisement_object.media %}
+<div class="modal fade" id="imageLightbox" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body p-0 text-center position-relative">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" style="filter: invert(1); z-index: 1060;"></button>
+                <img src="{{ advertisement_object.media.url }}" class="img-fluid rounded shadow-lg" style="max-height: 95vh; object-fit: contain;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

@@ -15,7 +15,6 @@ class CommentListView(LoginRequiredMixin, ListView):
     context_object_name = "comments"
     ordering = ["-created_at"]
 
-# 1 коментар, а далі лінь коментаувати тому що там і так понятно що за в'юшки
 class CommentDetailView(LoginRequiredMixin, DetailView):
     model = Comment
     template_name = "forumpage/comment_detail.html"
@@ -24,8 +23,7 @@ class CommentDetailView(LoginRequiredMixin, DetailView):
 class CommentCreationView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ["content", "media"]
-    template_name = "forumpage/comment_create.html"
-    success_url = reverse_lazy("comment-list")
+    template_name = "forumpage/comment_form.html"
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -34,7 +32,7 @@ class CommentCreationView(LoginRequiredMixin, CreateView):
 class CommentUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Comment
     fields = ["content", "media"]
-    template_name = "forumpage/comment_update.html"
+    template_name = "forumpage/comment_form.html"
 
 class CommentDeleteView(LoginRequiredMixin, UserIsOwnerMixin, DeleteView):
     model = Comment
@@ -51,5 +49,4 @@ class CommentLikeToggle(LoginRequiredMixin, View):
         if not created:
             like.delete()
 
-        return redirect("comment-detail", pk=pk)
-
+        return redirect(request.META.get('HTTP_REFERER', 'comment-list'))

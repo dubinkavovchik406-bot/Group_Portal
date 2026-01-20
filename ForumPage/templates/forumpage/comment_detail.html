@@ -1,18 +1,92 @@
-<h2>{{ comment.author.username }}</h2>
-<p>{{ comment.content }}</p>
+{% extends 'base.html' %}
+{% load static %}
 
-{% if comment.media %}
-    <img src="{{ comment.media.url }}" style="max-width:500px;">
-{% endif %}
+{% block title %}Пост від {{ comment.author.username }}{% endblock %}
 
-<form method="post" action="{% url 'comment-like' comment.pk %}">
-    {% csrf_token %}
-    <button type="submit">Лайк</button>
-</form>
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+{% endblock %}
 
-<p>{{ comment.likes_count }}</p>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
 
-{% if request.user == comment.author %}
-    <a href="{% url 'comment-update' comment.pk %}">Редагувати</a>
-    <a href="{% url 'comment-delete' comment.pk %}">Видалити</a>
-{% endif %}
+        <nav class="mb-4">
+            <a href="{% url 'comment-list' %}" class="text-decoration-none fw-bold" style="color: var(--forum-indigo);">
+                <i class="bi bi-arrow-left-short fs-4 align-middle"></i> Повернутися до обговорень
+            </a>
+        </nav>
+
+        <div class="forum-post-branch shadow-sm p-4" style="border-left-width: 6px; transform: none !important;">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="forum-avatar forum-avatar-large">
+                        {{ comment.author.username|slice:":1"|upper }}
+                    </div>
+                    <div>
+                        <h4 class="fw-800 mb-0 text-dark">{{ comment.author.username }}</h4>
+                        {% if comment.author.is_admin %}
+                            <span class="author-badge badge-admin">Адмін</span>
+                        {% elif comment.author.is_moderator %}
+                            <span class="author-badge badge-moderator">Модер</span>
+                        {% else %}
+                            <span class="author-badge badge-user">Учасник</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-end text-muted small">
+                    <div class="fw-bold">{{ comment.created_at|date:"d E Y" }}</div>
+                    <div>{{ comment.created_at|date:"H:i" }}</div>
+                </div>
+            </div>
+
+            <div class="post-body mb-4">
+                <p style="font-size: 1.25rem; line-height: 1.6; color: #334155; white-space: pre-wrap;">{{ comment.content }}</p>
+
+                {% if comment.media %}
+                <div class="post-media-full mt-4 rounded-4 overflow-hidden shadow-sm">
+                    <a href="#fullview">
+                        <img src="{{ comment.media.url }}" class="img-fluid w-100" style="max-height: 700px; object-fit: contain; background: #fbfcfd;">
+                    </a>
+                </div>
+
+                <div id="fullview" class="lightbox-overlay">
+                    <a href="#!" class="lightbox-close-area"></a>
+
+                    <a href="#!" class="lightbox-close-button">&times;</a>
+
+                    <img src="{{ comment.media.url }}" alt="Full image">
+                </div>
+                {% endif %}
+            </div>
+
+            <hr class="my-4" style="opacity: 0.1;">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-3">
+                    <form method="post" action="{% url 'comment-like' comment.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-round px-4 py-2 d-flex align-items-center gap-2
+                            {% if user in comment.likes.all %}btn-like-active{% else %}btn-like-outline{% endif %}">
+                            <i class="bi {% if user in comment.likes.all %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                            <span class="fw-bold">{{ comment.likes.count }}</span>
+                        </button>
+                    </form>
+                </div>
+
+                {% if user == comment.author %}
+                <div class="d-flex gap-2">
+                    <a href="{% url 'comment-update' comment.pk %}" class="btn btn-light btn-round text-primary border shadow-sm px-3" title="Редагувати">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a href="{% url 'comment-delete' comment.pk %}" class="btn btn-light btn-round text-danger border shadow-sm px-3" title="Видалити">
+                        <i class="bi bi-trash3"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

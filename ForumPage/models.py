@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 
+from django.urls import reverse
+
 CustomUser = settings.AUTH_USER_MODEL
 
 class Comment(models.Model):
@@ -18,6 +20,10 @@ class Comment(models.Model):
 
     def likes_count(self):
         return self.likes.count()
+
+    def get_absolute_url(self):
+        # После редактирования юзера перекинет на страницу этого самого поста
+        return reverse('comment-detail', kwargs={'pk': self.pk})
 
 
 class Like(models.Model):
