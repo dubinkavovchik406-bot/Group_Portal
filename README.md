@@ -15,8 +15,10 @@ Our goal of this project is **Django** **Group Portall** web site
 ![Project Home Page](static/images/comment.png)
 ![Project Home Page](static/images/comment-update.png)
 
-Easiest way :), [follow this link](https://kovalsky15.pythonanywhere.com/groups/)
-## How to install the project:
+## How to install the project
+##Easiest way :), [follow this link](https://kovalsky15.pythonanywhere.com/groups/)
+
+## How to install the project local:
 EN:
 1. Download project to your devace, using zip-file or link for project. / (if you use link) `git clone https://github.com/dubinkavovchik406-bot/TaskTraking.git`
 3. Open this folder using your IDE
