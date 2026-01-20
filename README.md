@@ -9,14 +9,15 @@ Our goal of this project is **Django** **Group Portall** web site
 * Сommunicate with other people, using comfortable **Forum**
 * **Chat** about your friends' hobbies
 * Stay up to date with the latest news via notifications
-### Some images from project site-pages
+
+### Some images from project
 ![HomePage](static/images/task-list.png)
 ![Project Home Page](static/images/task-detail.png)
 ![Project Home Page](static/images/comment.png)
 ![Project Home Page](static/images/comment-update.png)
 
 ## How to install the project
-##Easiest way :), [follow this link](https://kovalsky15.pythonanywhere.com/groups/)
+### Easiest way :), [follow this link](https://kovalsky15.pythonanywhere.com/groups/)
 
 ## How to install the project local:
 EN:
