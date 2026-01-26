@@ -1,7 +1,7 @@
-<h1>GroupPortal</h1>
+# GroupPortal
 
 ### Introduction
-Our goal of this project is **Django** **Group Portal** web site
+A community-focused web platform built with **Django** for managing groups and social interactions.
 
 ## 🛠 Tech Stack
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
@@ -9,53 +9,60 @@ Our goal of this project is **Django** **Group Portal** web site
 ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511fa.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 
-### You can:
-* Join **groups** and meet people like you.
-* Create an account and sign in **your profile** and **customize** it
-* Сommunicate with other people, using comfortable **Forum**
-* **Chat** about your friends' hobbies
-* Stay up to date with the latest news via notifications
+### Features:
+* **Join Groups:** Find and join communities of like-minded people.
+* **Profile Customization:** Create an account, sign in, and personalize your profile.
+* **Community Forum:** Communicate with others using a user-friendly forum.
+* **Social Interaction:** Discuss hobbies and interests with friends.
+* **Notifications:** Stay up to date with the latest community news.
 
-### Some images from project
+### Screenshots
 ![HomePage](static/image/IMG_20260120_203033_367.jpg)
-
 ![Project Home Page](static/image/IMG_20260120_203032_518.jpg)
----
+
 <details>
-<summary>More photos (click to expand)</summary>
-  
-<h3>Creating Advertisement</h3>
+<summary>📸 View more screenshots</summary>
 
-![Project Home Page](static/image/IMG_20260120_203032_976.jpg)
+#### Creating Advertisement
+![Creating Advertisement](static/image/IMG_20260120_203032_976.jpg)
 
-<h3>Group Detail</h3>
+#### Group Detail
+![Group Detail](static/image/IMG_20260120_203033_075.jpg)
 
-![Project Home Page](static/image/IMG_20260120_203033_075.jpg)
 </details>
 
-## How to install the project
-### Easiest way :), [follow this link](https://kovalsky15.pythonanywhere.com/groups/)
+---
 
-## How to install the project local:
-EN:
-1. Download project to your device, using zip-file in last release tag or link for project. / (if you use link) `git clone https://github.com/KovalskyDev/Group_Portal.git`
-3. Open this folder using your IDE
-4. Make for you, virtual environment: `python -m venv venv`
-5. Activate it: (on Windows) `.\venv\Scripts\activate` / (on Linux or macOS) `source venv/bin/activate`
-6. Install dependencies in your virtual environment: `pip install -r requirements.txt`
-7. Run on your LocalHost: `python manage.py runserver`
+## Installation Guide
 
-RU:
-1. Загрузите проект на ваше устройство, используя ZIP-архив с новейшего релиза или ссылку на проект / (в случае с ссылкой) `git clone https://github.com/KovalskyDev/Group_Portal.git`
-3. Откройте эту папку в вашей интегрированной среде разработки (IDE).
-4. Создайте для себя виртуальное окружение: `python -m venv venv`
-5. Активируйте его: (Для Windows) `.\venv\Scripts\activate` / (Для Linux или macOS) `source venv/bin/activate`
-6. Установите зависимости в вашем виртуальном окружении: `pip install -r requirements.txt`
-7. Запустите на вашем LocalHost: `python manage.py runserver`
+### Quick Start
+[Visit the live website here](https://kovalsky15.pythonanywhere.com/groups/)
+
+### Local Setup (EN):
+1. Download the project using the ZIP file from the latest **release** or clone the repository:  
+   `git clone https://github.com/KovalskyDev/Group_Portal.git`
+2. Open the project folder in your IDE.
+3. Create a virtual environment: `python -m venv venv`
+4. Activate it:
+   * **Windows:** `.\venv\Scripts\activate`
+   * **Linux/macOS:** `source venv/bin/activate`
+5. Install **dependencies**: `pip install -r requirements.txt`
+6. Run the server: `python manage.py runserver`
+
+### Локальная установка (RU):
+1. Загрузите проект через ZIP-архив (последний **релиз**) или клонируйте репозиторий:  
+   `git clone https://github.com/KovalskyDev/Group_Portal.git`
+2. Откройте папку в вашей IDE.
+3. Создайте виртуальное окружение: `python -m venv venv`
+4. Активируйте его:
+   * **Windows:** `.\venv\Scripts\activate`
+   * **Linux/macOS:** `source venv/bin/activate`
+5. Установите зависимости: `pip install -r requirements.txt`
+6. Запустите сервер: `python manage.py runserver`
 
 ## 👥 Team
 
 | Role | Avatar | Name | Task |
 | :--- | :--- | :--- | :--- |
-| **Team Lead** | <img src="https://github.com/KovalskyDev.png" width="40px"> | [Владимир](https://github.com/KovalskyDev) | Architecture, Models, Code Review, CSS, UI |
-| **Backend** | <img src="https://github.com/Keth1o.png" width="40px"> | [Катерина](https://github.com/Keth1o) | Views, Database logic |
+| **Team Lead** | <img src="https://github.com/KovalskyDev.png" width="40px"> | [KovalskyDev](https://github.com/KovalskyDev) | Architecture, Models, Code Review, CSS, UI |
+| **Backend** | <img src="https://github.com/Keth1o.png" width="40px"> | [Keth1o](https://github.com/Keth1o) | Views, Database logic |
